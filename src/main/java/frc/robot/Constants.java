@@ -39,8 +39,8 @@ public final class Constants {
         }
 
         // NOTE: Follower motors are at CAN_ID+1
-        public static final int LEFT_MOTOR_CAN_ID = 1;
-        public static final int RIGHT_MOTOR_CAN_ID = 3;
+        public static final int LEFT_MOTOR_CAN_ID = 6;
+        public static final int RIGHT_MOTOR_CAN_ID = 4;
 
         public static final boolean LEFT_MOTOR_INVERTED = false;
         public static final boolean RIGHT_MOTOR_INVERTED = true;
