@@ -10,7 +10,6 @@ import frc.robot.OperatorInput;
 import frc.robot.commands.drive.DriveOnHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 
-
 public class AutoCommand extends SequentialCommandGroup {
 
     public AutoCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem) {
@@ -21,9 +20,9 @@ public class AutoCommand extends SequentialCommandGroup {
         addCommands(new InstantCommand());
 
         AutoPattern autoPattern = operatorInput.getAutoPattern();
-        double      autoDelay   = operatorInput.getAutoDelay();
+        double autoDelay = operatorInput.getAutoDelay();
 
-        Alliance    alliance    = DriverStation.getAlliance().orElse(null);
+        Alliance alliance = DriverStation.getAlliance().orElse(null);
 
         if (alliance == null) {
             System.out.println("*** ERROR **** unknown Alliance ");
@@ -55,32 +54,32 @@ public class AutoCommand extends SequentialCommandGroup {
          */
         switch (autoPattern) {
 
-        case DO_NOTHING:
-            return;
+            case DO_NOTHING:
+                return;
 
-        case DRIVE_FORWARD:
+            case DRIVE_FORWARD:
 
-            // Set the current heading to zero, the gyro could have drifted while
-            // waiting for auto to start.
-            driveSubsystem.setGyroHeading(0);
+                // Set the current heading to zero, the gyro could have drifted while
+                // waiting for auto to start.
+                driveSubsystem.setGyroHeading(0);
 
-            // Drive forward 1m at .2 speed
-            addCommands(new DriveOnHeadingCommand(0, .2, 100, driveSubsystem));
-            return;
+                // Drive forward 1m at .2 speed
+                addCommands(new DriveOnHeadingCommand(0, .2, 100, driveSubsystem));
+                return;
 
-        case BOX:
+            case BOX:
 
-            // Set the current heading to zero, the gyro could have drifted while
-            // waiting for auto to start.
-            driveSubsystem.setGyroHeading(0);
+                // Set the current heading to zero, the gyro could have drifted while
+                // waiting for auto to start.
+                driveSubsystem.setGyroHeading(0);
 
-            // Drive out and then one box
-            addCommands(new DriveOnHeadingCommand(0, .4, 200, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(270, .4, 100, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(180, .4, 100, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(90, .4, 100, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(0, .4, 100, driveSubsystem));
-            return;
+                // Drive out and then one box
+                addCommands(new DriveOnHeadingCommand(0, .1, 200, false, driveSubsystem));
+                addCommands(new DriveOnHeadingCommand(270, .1, 100, false, driveSubsystem));
+                addCommands(new DriveOnHeadingCommand(180, .1, 100, false, driveSubsystem));
+                addCommands(new DriveOnHeadingCommand(90, .1, 100, false, driveSubsystem));
+                addCommands(new DriveOnHeadingCommand(0, .1, 100, driveSubsystem));
+                return;
         }
     }
 }
