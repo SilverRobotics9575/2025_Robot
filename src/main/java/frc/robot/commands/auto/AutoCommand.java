@@ -75,12 +75,43 @@ public class AutoCommand extends SequentialCommandGroup {
             driveSubsystem.setGyroHeading(0);
 
             // Drive out and then one box
-            addCommands(new DriveOnHeadingCommand(0, .4, 200, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(270, .4, 100, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(180, .4, 100, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(90, .4, 100, false, driveSubsystem));
-            addCommands(new DriveOnHeadingCommand(0, .4, 100, driveSubsystem));
+            addCommands(new DriveOnHeadingCommand(0, .2, 100, false, driveSubsystem));
+            addCommands(new DriveOnHeadingCommand(270, .2, 100, false, driveSubsystem));
+            addCommands(new DriveOnHeadingCommand(180, .2, 100, false, driveSubsystem));
+            addCommands(new DriveOnHeadingCommand(90, .2, 100, false, driveSubsystem));
+            addCommands(new DriveOnHeadingCommand(0, .2, 100, driveSubsystem));
             return;
+
+        case DRIVE_BACKWARD:
+
+            // Set the current heading to zero to prevent any gyro drifitng
+            driveSubsystem.setGyroHeading(0);
+
+            // Drive backward 1m at .2 speed
+            addCommands(new DriveOnHeadingCommand(0, -.2, 100, driveSubsystem));
+            return;
+
+        case TURN_RIGHT:
+
+            // Set the current heading to zero to prevent any gyro drifitng
+            driveSubsystem.setGyroHeading(0);
+
+            // TODO: Write code to turn robot right
+
+        case TURN_LEFT:
+
+            // Set the current heading to zero to prevent gyro drifitng
+            driveSubsystem.setGyroHeading(0);
+
+            // TODO: Write code to turn robot left
+            addCommands(new DriveOnHeadingCommand(-90, .1, 0, driveSubsystem));
+
+        case SPIN_180:
+
+            // Set the current heading to zero to prevent any gyro drifting
+            driveSubsystem.setGyroHeading(0);
+
+            // TODO: Write code to spin robot 180 degrees
         }
     }
 }

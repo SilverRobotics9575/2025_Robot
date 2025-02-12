@@ -44,58 +44,62 @@ public class DriveSubsystem extends SubsystemBase {
         public void initSendable(SendableBuilder builder) {
             builder.setSmartDashboardType("Gyro");
             builder.addDoubleProperty("Value",
-                    () -> {
-                        double angle = super.getAngle();
-                        // Print the angle in the range 0-360;
-                        angle %= 360;
-                        if (angle < 0) {
-                            angle += 360;
-                        }
-                        // Round the angle to 2 decimal places for the Dashboard
-                        return Math.round(angle * 100d) / 100d;
-                    },
-                    null);
+                () -> {
+                    double angle = super.getAngle();
+                    // Print the angle in the range 0-360;
+                    angle %= 360;
+                    if (angle < 0) {
+                        angle += 360;
+                    }
+                    // Round the angle to 2 decimal places for the Dashboard
+                    return Math.round(angle * 100d) / 100d;
+                },
+                null);
         }
     }
 
-    private final LightsSubsystem lightsSubsystem;
+    private final LightsSubsystem     lightsSubsystem;
 
     // The motors on the left side of the drive.
-    private final SparkMax leftPrimaryMotor = new SparkMax(DriveConstants.LEFT_MOTOR_CAN_ID, MotorType.kBrushless); // ID: 1
-    private final SparkMax leftFollowerMotor = new SparkMax(DriveConstants.LEFT_MOTOR_CAN_ID + 1, // ID: 2
-            MotorType.kBrushless);
+    private final SparkMax            leftPrimaryMotor   = new SparkMax(DriveConstants.LEFT_MOTOR_CAN_ID, MotorType.kBrushless);  // ID:
+                                                                                                                                  // 1
+    private final SparkMax            leftFollowerMotor  = new SparkMax(DriveConstants.LEFT_MOTOR_CAN_ID + 1,                     // ID:
+                                                                                                                                  // 2
+        MotorType.kBrushless);
 
     // The motors on the right side of the drive.
-    private final SparkMax rightPrimaryMotor = new SparkMax(DriveConstants.RIGHT_MOTOR_CAN_ID, MotorType.kBrushless); // ID: 3
-    private final SparkMax rightFollowerMotor = new SparkMax(DriveConstants.RIGHT_MOTOR_CAN_ID + 1, // ID: 4
-            MotorType.kBrushless);
+    private final SparkMax            rightPrimaryMotor  = new SparkMax(DriveConstants.RIGHT_MOTOR_CAN_ID, MotorType.kBrushless); // ID:
+                                                                                                                                  // 3
+    private final SparkMax            rightFollowerMotor = new SparkMax(DriveConstants.RIGHT_MOTOR_CAN_ID + 1,                    // ID:
+                                                                                                                                  // 4
+        MotorType.kBrushless);
 
-    private double leftSpeed = 0;
-    private double rightSpeed = 0;
+    private double                    leftSpeed          = 0;
+    private double                    rightSpeed         = 0;
 
     // Encoders
-    private final RelativeEncoder leftEncoder = leftPrimaryMotor.getEncoder();
-    private final RelativeEncoder rightEncoder = rightPrimaryMotor.getEncoder();
+    private final RelativeEncoder     leftEncoder        = leftPrimaryMotor.getEncoder();
+    private final RelativeEncoder     rightEncoder       = rightPrimaryMotor.getEncoder();
 
-    private double leftEncoderOffset = 0;
-    private double rightEncoderOffset = 0;
+    private double                    leftEncoderOffset  = 0;
+    private double                    rightEncoderOffset = 0;
 
     /*
      * Gyro
      */
-    private NavXGyro navXGyro = new NavXGyro();
+    private NavXGyro                  navXGyro           = new NavXGyro();
 
-    private double gyroHeadingOffset = 0;
-    private double gyroPitchOffset = 0;
+    private double                    gyroHeadingOffset  = 0;
+    private double                    gyroPitchOffset    = 0;
 
     /*
      * Simulation fields
      */
-    private Field2d field = null;
-    private DifferentialDrivetrainSim drivetrainSim = null;
-    private double simAngle = 0;
-    private double simLeftEncoder = 0;
-    private double simRightEncoder = 0;
+    private Field2d                   field              = null;
+    private DifferentialDrivetrainSim drivetrainSim      = null;
+    private double                    simAngle           = 0;
+    private double                    simLeftEncoder     = 0;
+    private double                    simRightEncoder    = 0;
 
     /**
      * Creates a new DriveSubsystem.
@@ -109,8 +113,8 @@ public class DriveSubsystem extends SubsystemBase {
          */
         SparkMaxConfig config = new SparkMaxConfig();
         config.inverted(DriveConstants.LEFT_MOTOR_INVERTED)
-                .idleMode(IdleMode.kBrake)
-                .disableFollowerMode();
+            .idleMode(IdleMode.kBrake)
+            .disableFollowerMode();
         leftPrimaryMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         config.follow(leftPrimaryMotor);
@@ -121,8 +125,8 @@ public class DriveSubsystem extends SubsystemBase {
          */
         config = new SparkMaxConfig();
         config.inverted(DriveConstants.RIGHT_MOTOR_INVERTED)
-                .idleMode(IdleMode.kBrake)
-                .disableFollowerMode();
+            .idleMode(IdleMode.kBrake)
+            .disableFollowerMode();
         rightPrimaryMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         config.follow(rightPrimaryMotor);
@@ -140,10 +144,10 @@ public class DriveSubsystem extends SubsystemBase {
             SmartDashboard.putData("Field", field);
 
             drivetrainSim = DifferentialDrivetrainSim.createKitbotSim(
-                    KitbotMotor.kDoubleNEOPerSide, // Double NEO per side
-                    KitbotGearing.k10p71, // 10.71:1
-                    KitbotWheelSize.kSixInch, // 6" diameter wheels.
-                    null // No measurement noise.
+                KitbotMotor.kDoubleNEOPerSide, // Double NEO per side
+                KitbotGearing.k10p71, // 10.71:1
+                KitbotWheelSize.kSixInch, // 6" diameter wheels.
+                null // No measurement noise.
             );
         }
     }
@@ -214,7 +218,7 @@ public class DriveSubsystem extends SubsystemBase {
         gyroYawAngle += gyroHeadingOffset;
 
         // Round to two decimal places
-        gyroYawAngle = Math.round(gyroYawAngle * 100) / 100;
+        gyroYawAngle  = Math.round(gyroYawAngle * 100) / 100;
 
         // The angle can be positive or negative and extends beyond 360 degrees.
         double heading = gyroYawAngle % 360.0;
@@ -244,11 +248,12 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Determine the error between the current heading and
         // the desired heading
-        double error = requiredHeading - currentHeading;
+        double error          = requiredHeading - currentHeading;
 
         if (error > 180) {
             error -= 360;
-        } else if (error < -180) {
+        }
+        else if (error < -180) {
             error += 360;
         }
 
@@ -323,8 +328,8 @@ public class DriveSubsystem extends SubsystemBase {
     public void resetEncoders() {
 
         // Reset the offsets so that the encoders are zeroed.
-        leftEncoderOffset = 0;
-        leftEncoderOffset = -getLeftEncoder();
+        leftEncoderOffset  = 0;
+        leftEncoderOffset  = -getLeftEncoder();
 
         rightEncoderOffset = 0;
         rightEncoderOffset = -getRightEncoder();
@@ -338,7 +343,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
 
-        this.leftSpeed = leftSpeed;
+        this.leftSpeed  = leftSpeed;
         this.rightSpeed = rightSpeed;
 
         // NOTE: Follower motors are set to follow the primary motors
@@ -382,8 +387,8 @@ public class DriveSubsystem extends SubsystemBase {
             // When the robot is enabled, calculate the position
             // Set the inputs to the system.
             drivetrainSim.setInputs(
-                    leftSpeed * RobotController.getInputVoltage(),
-                    rightSpeed * RobotController.getInputVoltage());
+                leftSpeed * RobotController.getInputVoltage(),
+                rightSpeed * RobotController.getInputVoltage());
 
             // Advance the model by 20 ms. Note that if you are running this
             // subsystem in a separate thread or have changed the nominal timestep
@@ -392,7 +397,8 @@ public class DriveSubsystem extends SubsystemBase {
 
             // Move the robot on the simulated field
             field.setRobotPose(drivetrainSim.getPose());
-        } else {
+        }
+        else {
             // When the robot is disabled, allow the user to move
             // the robot on the simulation field.
             drivetrainSim.setPose(field.getRobotPose());
@@ -401,10 +407,10 @@ public class DriveSubsystem extends SubsystemBase {
         // Update the gyro simulation offset
         // NOTE: the pose has the opposite rotational direction from the system
         // pose degrees are counter-clockwise positive. weird.
-        simAngle = -drivetrainSim.getPose().getRotation().getDegrees();
+        simAngle        = -drivetrainSim.getPose().getRotation().getDegrees();
 
         // Update the encoders with the simulation offsets.
-        simLeftEncoder = drivetrainSim.getLeftPositionMeters() * 100 / DriveConstants.CM_PER_ENCODER_COUNT;
+        simLeftEncoder  = drivetrainSim.getLeftPositionMeters() * 100 / DriveConstants.CM_PER_ENCODER_COUNT;
         simRightEncoder = drivetrainSim.getRightPositionMeters() * 100 / DriveConstants.CM_PER_ENCODER_COUNT;
     }
 
@@ -414,9 +420,9 @@ public class DriveSubsystem extends SubsystemBase {
         StringBuilder sb = new StringBuilder();
 
         sb.append(this.getClass().getSimpleName()).append(" : ")
-                .append("Heading ").append(getHeading())
-                .append(", Pitch ").append(getPitch())
-                .append(", Drive dist ").append(Math.round(getEncoderDistanceCm() * 10) / 10d).append("cm");
+            .append("Heading ").append(getHeading())
+            .append(", Pitch ").append(getPitch())
+            .append(", Drive dist ").append(Math.round(getEncoderDistanceCm() * 10) / 10d).append("cm");
 
         return sb.toString();
     }
