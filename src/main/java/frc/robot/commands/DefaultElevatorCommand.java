@@ -3,12 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OperatorInput;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DefaultElevatorCommand extends Command {
+public class DefaultElevatorCommand extends LoggingCommand {
 
     private final OperatorInput oi;
     private final ElevatorSubsystem elevatorSubsystem;
@@ -26,13 +25,13 @@ public class DefaultElevatorCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        logCommandStart();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         /*if (oi.level0()){
-
         }*/
         if (oi.level1()) {
             elevatorSubsystem.level(1);
@@ -48,6 +47,8 @@ public class DefaultElevatorCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        logCommandEnd(interrupted);
+        elevatorSubsystem.stop();
     }
 
     // Returns true when the command should end.
