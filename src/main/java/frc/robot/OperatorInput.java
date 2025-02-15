@@ -128,7 +128,7 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean isBoost() {
-        // When the left joystick is being pressed 
+        // Activates boost mode as long as left axis is held
         return driverController.getLeftStickButtonPressed();
     }
 
@@ -175,20 +175,26 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean Level0() {
-        return driverController.getAButtonPressed();
+        // TODO: Test that the POV axis is that golden axis
+        // return driverController.getPOV() == 180;
     }
 
     public boolean level1() {
-        return driverController.getBButtonPressed();
+        return driverController.getAButtonPressed();
     }
 
     public boolean level2() {
-        return driverController.getYButtonPressed();
+        return driverController.getBButtonPressed();
     }
 
     public boolean level3() {
+        return driverController.getYButtonPressed();
+    }
+
+    public boolean level4() {
         return driverController.getXButtonPressed();
     }
+
     /*
      * Support for haptic feedback to the driver
      */
