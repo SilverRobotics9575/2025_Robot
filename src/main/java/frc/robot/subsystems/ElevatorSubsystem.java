@@ -14,7 +14,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -25,14 +24,6 @@ import frc.robot.Constants.ElevatorConstants;
     integral term drives the total accumulated error-over-time to zero.
  */
 public class ElevatorSubsystem extends SubsystemBase {
-
-    public enum Setpoint {
-        K_FEEDERSTATION,
-        KLEVEL1,
-        KLEVEL2,
-        KLEVEL3,
-        KLEVEL4;
-    }
 
     // private final LightsSubsystem lightsSubsystem;
     private final SparkMax elevatorMotor
@@ -66,22 +57,19 @@ public class ElevatorSubsystem extends SubsystemBase {
      * Command to set the subsystem setpoint. This will set the arm and elevator
      * to their predefined positions for the given setpoint.
      */
-    public Command setSetpointCommand(Setpoint setpoint) {
-        return this.runOnce(
-                () -> {
-                    switch (setpoint) {
-                        case K_FEEDERSTATION ->
-                            elevatorCurrentTarget = ElevatorConstants.kFeederStation;
-                        case KLEVEL1 ->
-                            elevatorCurrentTarget = ElevatorConstants.kLevel1;
-                        case KLEVEL2 ->
-                            elevatorCurrentTarget = ElevatorConstants.kLevel2;
-                        case KLEVEL3 ->
-                            elevatorCurrentTarget = ElevatorConstants.kLevel3;
-                        case KLEVEL4 ->
-                            elevatorCurrentTarget = ElevatorConstants.kLevel4;
-                    }
-                });
+    public void level(int level) {
+        switch (level) {
+            /* case K_FEEDERSTATION ->
+                elevatorCurrentTarget = ElevatorConstants.kFeederStation;*/
+            case 1 ->
+                elevatorCurrentTarget = ElevatorConstants.kLevel1;
+            case 2 ->
+                elevatorCurrentTarget = ElevatorConstants.kLevel2;
+            case 3 ->
+                elevatorCurrentTarget = ElevatorConstants.kLevel3;
+            case 4 ->
+                elevatorCurrentTarget = ElevatorConstants.kLevel4;
+        }
     }
 
     /**
@@ -94,19 +82,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                 elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
     }
 
-// Should consider adding a zeroOnUserButton method to zero the encoders when the user button is pressed
-    /*
-    private void zeroOnUserButton() {
-        if (!wasResetByButton && RobotController.getUserButton()) {
-            // Zero the encoders only when button switches from "unpressed" to "pressed" to prevent
-            // constant zeroing while pressed
-            wasResetByButton = true;
-            armEncoder.setPosition(0);
-            elevatorEncoder.setPosition(0);
-        } else if (!RobotController.getUserButton()) {
-            wasResetByButton = false;
-        }
-    }*/
     @Override
     public void periodic() {
         moveToSetpoint();

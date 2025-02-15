@@ -10,14 +10,16 @@ import frc.robot.subsystems.ElevatorSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultElevatorCommand extends Command {
 
+    private final OperatorInput oi;
     private final ElevatorSubsystem elevatorSubsystem;
 
     /**
      * Creates a new ElevatorCommand.
      */
-    public DefaultElevatorCommand(OperatorInput operatorInput, ElevatorSubsystem elevatorSubsystem) {
+    public DefaultElevatorCommand(OperatorInput oi, ElevatorSubsystem elevatorSubsystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(elevatorSubsystem);
+        this.oi = oi;
         this.elevatorSubsystem = elevatorSubsystem;
     }
 
@@ -29,7 +31,18 @@ public class DefaultElevatorCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        /*if (oi.level0()){
 
+        }*/
+        if (oi.level1()) {
+            elevatorSubsystem.level(1);
+        } else if (oi.level2()) {
+            elevatorSubsystem.level(2);
+        } else if (oi.level3()) {
+            elevatorSubsystem.level(3);
+        } else if (oi.level4()) {
+            elevatorSubsystem.level(4);
+        }
     }
 
     // Called once the command ends or is interrupted.
