@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DefaultElevatorCommand;
 import frc.robot.commands.auto.AutoCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -29,7 +30,7 @@ public class RobotContainer {
     private final DriveSubsystem driveSubsystem = new DriveSubsystem(lightsSubsystem);
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(lightsSubsystem);
     // Driver and operator controllers
-    private final OperatorInput operatorInput = new OperatorInput();
+    private final OperatorInput oi = new OperatorInput();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and
@@ -39,11 +40,11 @@ public class RobotContainer {
 
         // Initialize all Subsystem default commands.
         driveSubsystem.setDefaultCommand(
-                new DefaultDriveCommand(operatorInput, driveSubsystem));
-        // elevatorSubsystem.setDefaultCommand();
+                new DefaultDriveCommand(oi, driveSubsystem));
+        elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(oi, elevatorSubsystem));
 
         // Configure the button bindings - pass in all subsystems
-        operatorInput.configureButtonBindings(driveSubsystem);
+        oi.configureButtonBindings(driveSubsystem, elevatorSubsystem);
 
         // Add a trigger to flash the LEDs in sync with the
         // RSL light for 5 flashes when the robot is enabled
@@ -58,6 +59,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new AutoCommand(operatorInput, driveSubsystem);
+        return new AutoCommand(oi, driveSubsystem);
     }
 }
