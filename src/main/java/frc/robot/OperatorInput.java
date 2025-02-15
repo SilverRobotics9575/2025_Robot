@@ -174,11 +174,10 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getRightBumperButtonPressed();
     }
 
+    /* TODO: Test that the POV axis is that golden axis
     public boolean Level0() {
-        // TODO: Test that the POV axis is that golden axis
         // return driverController.getPOV() == 180;
-    }
-
+    } */
     public boolean level1() {
         return driverController.getAButtonPressed();
     }
