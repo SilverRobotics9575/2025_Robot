@@ -9,7 +9,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DefaultDriveCommand extends LoggingCommand {
 
     private final DriveSubsystem driveSubsystem;
-    private final OperatorInput  operatorInput;
+    private final OperatorInput operatorInput;
 
     /**
      * Creates a new DefaultDriveCommand.
@@ -19,7 +19,7 @@ public class DefaultDriveCommand extends LoggingCommand {
      */
     public DefaultDriveCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem) {
 
-        this.operatorInput  = operatorInput;
+        this.operatorInput = operatorInput;
         this.driveSubsystem = driveSubsystem;
 
         // Use addRequirements() here to declare subsystem dependencies.
@@ -35,15 +35,15 @@ public class DefaultDriveCommand extends LoggingCommand {
     public void execute() {
 
         // Get the selected drive mode
-        DriveMode driveMode          = operatorInput.getSelectedDriveMode();
+        DriveMode driveMode = operatorInput.getSelectedDriveMode();
 
         // Calculate the drive scaling factor based on the boost mode and the slow mode.
-        double    driveScalingFactor = DriveConstants.DRIVE_SCALING_NORMAL;
+        double driveScalingFactor = DriveConstants.DRIVE_SCALING_NORMAL;
 
         if (operatorInput.isBoost()) {
             driveScalingFactor = DriveConstants.DRIVE_SCALING_BOOST;
         }
-        if (operatorInput.isSlowDown()) {
+        if (operatorInput.isSlow()) {
             driveScalingFactor = DriveConstants.DRIVE_SCALING_SLOW;
         }
 
@@ -51,16 +51,15 @@ public class DefaultDriveCommand extends LoggingCommand {
         // joystick values.
         if (driveMode == DriveMode.TANK) {
 
-            double leftSpeed  = operatorInput.getLeftSpeed();
+            double leftSpeed = operatorInput.getLeftSpeed();
             double rightSpeed = operatorInput.getRightSpeed();
 
             setTankDriveMotorSpeeds(leftSpeed, rightSpeed, driveScalingFactor);
 
-        }
-        else {
+        } else {
 
             double speed = operatorInput.getSpeed();
-            double turn  = operatorInput.getTurn();
+            double turn = operatorInput.getTurn();
 
             setArcadeDriveMotorSpeeds(speed, turn, driveScalingFactor);
         }
@@ -78,7 +77,6 @@ public class DefaultDriveCommand extends LoggingCommand {
         logCommandEnd(interrupted);
     }
 
-
     /**
      * Set the motor speeds based on tank drive.
      *
@@ -89,15 +87,15 @@ public class DefaultDriveCommand extends LoggingCommand {
     private void setTankDriveMotorSpeeds(double leftSpeed, double rightSpeed, double driveScalingFactor) {
 
         double speed = (leftSpeed + rightSpeed) / 2.0;
-        double turn  = (leftSpeed - rightSpeed) / 2.0;
+        double turn = (leftSpeed - rightSpeed) / 2.0;
 
         setArcadeDriveMotorSpeeds(speed, turn, driveScalingFactor);
     }
 
-
     /**
-     * Calculate the scaled arcade drive speeds from the passed in values. In arcade mode, the turn
-     * is cut in half to help control the robot more consistently.
+     * Calculate the scaled arcade drive speeds from the passed in values. In
+     * arcade mode, the turn is cut in half to help control the robot more
+     * consistently.
      *
      * @param speed
      * @param turn
@@ -115,7 +113,7 @@ public class DefaultDriveCommand extends LoggingCommand {
             speed = (1.0 - Math.abs(turn)) * Math.signum(speed);
         }
 
-        double leftSpeed  = (speed + turn) * driveScalingFactor;
+        double leftSpeed = (speed + turn) * driveScalingFactor;
         double rightSpeed = (speed - turn) * driveScalingFactor;
 
         driveSubsystem.setMotorSpeeds(leftSpeed, rightSpeed);

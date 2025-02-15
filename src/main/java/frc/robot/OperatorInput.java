@@ -56,6 +56,7 @@ public class OperatorInput extends SubsystemBase {
         driveModeChooser.addOption("Tank", DriveMode.TANK);
         driveModeChooser.addOption("Single Stick (L)", DriveMode.SINGLE_STICK_LEFT);
         driveModeChooser.addOption("Single Stick (R)", DriveMode.SINGLE_STICK_RIGHT);
+        driveModeChooser.addOption("Slow Mode", DriveMode.SLOW_MODE);
     }
 
     /**
@@ -127,11 +128,13 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean isBoost() {
-        return driverController.getLeftBumperButton();
+        // When the left joystick is being pressed 
+        return driverController.getLeftStickButtonPressed();
     }
 
-    public boolean isSlowDown() {
-        return driverController.getRightBumperButton();
+    public boolean isSlow() {
+        // If the dashboard chooses slow mode then all driving will become slow
+        return (driveModeChooser.getSelected() == DriveMode.SLOW_MODE);
     }
 
     public double getLeftSpeed() {
@@ -160,6 +163,32 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getRightX();
     }
 
+    /*
+    * Elevator Subsystem
+     */
+    public boolean intakeCoral() {
+        return driverController.getLeftBumperButtonPressed();
+    }
+
+    public boolean scoreCoral() {
+        return driverController.getRightBumperButtonPressed();
+    }
+
+    public boolean Level0() {
+        return driverController.getAButtonPressed();
+    }
+
+    public boolean level1() {
+        return driverController.getBButtonPressed();
+    }
+
+    public boolean level2() {
+        return driverController.getYButtonPressed();
+    }
+
+    public boolean level3() {
+        return driverController.getXButtonPressed();
+    }
     /*
      * Support for haptic feedback to the driver
      */

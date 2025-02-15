@@ -47,7 +47,7 @@ public final class Constants {
     public static final class DriveConstants {
 
         public static enum DriveMode {
-            TANK, ARCADE, SINGLE_STICK_LEFT, SINGLE_STICK_RIGHT;
+            TANK, ARCADE, SINGLE_STICK_LEFT, SINGLE_STICK_RIGHT, SLOW_MODE;
         }
 
         // NOTE: Follower motors are at CAN_ID+1
