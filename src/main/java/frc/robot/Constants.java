@@ -32,6 +32,18 @@ public final class Constants {
         }
     }
 
+    public static final class ElevatorConstants {
+
+        public static final int ELEVATOR_MOTOR_CAN_ID = 7;
+        public static final boolean ELEVATOR_MOTOR_INVERTED = false;
+
+        public static final int kFeederStation = 0;
+        public static final int kLevel1 = 0;
+        public static final int kLevel2 = 0;
+        public static final int kLevel3 = 100;
+        public static final int kLevel4 = 150;
+    }
+
     public static final class DriveConstants {
 
         public static enum DriveMode {
