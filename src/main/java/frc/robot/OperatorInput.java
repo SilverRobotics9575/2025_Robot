@@ -42,6 +42,10 @@ public class OperatorInput extends SubsystemBase {
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
         autoPatternChooser.addOption("Drive Forward", AutoPattern.DRIVE_FORWARD);
         autoPatternChooser.addOption("Box", AutoPattern.BOX);
+        autoPatternChooser.addOption("Drive Backward", AutoPattern.DRIVE_BACKWARD);
+        autoPatternChooser.addOption("Turn Right", AutoPattern.TURN_RIGHT);
+        autoPatternChooser.addOption("Turn Left", AutoPattern.TURN_LEFT);
+        autoPatternChooser.addOption("Spin 180", AutoPattern.SPIN_180);
 
         waitTimeChooser.setDefaultOption("No wait", 0);
         SmartDashboard.putData("Auto Wait Time", waitTimeChooser);

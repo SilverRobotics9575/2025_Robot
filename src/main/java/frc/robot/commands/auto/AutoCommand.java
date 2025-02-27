@@ -97,6 +97,7 @@ public class AutoCommand extends SequentialCommandGroup {
             driveSubsystem.setGyroHeading(0);
 
             // TODO: Write code to turn robot right
+            addCommands(new DriveOnHeadingCommand(90, .1, 0, driveSubsystem));
 
         case TURN_LEFT:
 
@@ -112,6 +113,7 @@ public class AutoCommand extends SequentialCommandGroup {
             driveSubsystem.setGyroHeading(0);
 
             // TODO: Write code to spin robot 180 degrees
+            addCommands(new DriveOnHeadingCommand(180, .1, 0, driveSubsystem));
         }
     }
 }
