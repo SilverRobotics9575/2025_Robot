@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultElevatorCommand;
-import frc.robot.commands.FeederCommand;
+import frc.robot.commands.DefaultFeederCommand;
 import frc.robot.commands.auto.AutoCommand;
 import frc.robot.commands.drive.DefaultDriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -28,12 +28,13 @@ public class RobotContainer {
     // Subsystems
     // Declarre the lighting subsystem first and pass it into the other subsystem
     // constructors so that they can indicate status information on the lights
-    private final LightsSubsystem   lightsSubsystem   = new LightsSubsystem();
-    private final DriveSubsystem    driveSubsystem    = new DriveSubsystem(lightsSubsystem);
+    private final LightsSubsystem lightsSubsystem = new LightsSubsystem();
+    private final DriveSubsystem driveSubsystem = new DriveSubsystem(lightsSubsystem);
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(lightsSubsystem);
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem(lightsSubsystem);
+
     // Driver and operator controllers
-    private final OperatorInput     oi                = new OperatorInput();
-    private final FeederSubsystem   feederSubsystem   = new FeederSubsystem(lightsSubsystem);
+    private final OperatorInput oi = new OperatorInput();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and
@@ -43,9 +44,9 @@ public class RobotContainer {
 
         // Initialize all Subsystem default commands.
         driveSubsystem.setDefaultCommand(
-            new DefaultDriveCommand(oi, driveSubsystem));
+                new DefaultDriveCommand(oi, driveSubsystem));
         elevatorSubsystem.setDefaultCommand(new DefaultElevatorCommand(oi, elevatorSubsystem));
-        feederSubsystem.setDefaultCommand(new FeederCommand(oi, feederSubsystem));
+        feederSubsystem.setDefaultCommand(new DefaultFeederCommand(oi, feederSubsystem));
 
         // Configure the button bindings - pass in all subsystems
         oi.configureButtonBindings(driveSubsystem, elevatorSubsystem);
@@ -54,7 +55,7 @@ public class RobotContainer {
         // RSL light for 5 flashes when the robot is enabled
         // This can happen also if there is a brown-out of the RoboRIO.
         new Trigger(() -> RobotState.isEnabled())
-            .onTrue(new InstantCommand(() -> lightsSubsystem.setRSLFlashCount(5)));
+                .onTrue(new InstantCommand(() -> lightsSubsystem.setRSLFlashCount(5)));
     }
 
     /**

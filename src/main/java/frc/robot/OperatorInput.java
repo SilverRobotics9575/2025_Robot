@@ -27,8 +27,8 @@ public class OperatorInput extends SubsystemBase {
 
     // Auto Setup Choosers
     SendableChooser<AutoPattern> autoPatternChooser = new SendableChooser<>();
-    SendableChooser<Integer>     waitTimeChooser    = new SendableChooser<>();
-    SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
+    SendableChooser<Integer> waitTimeChooser = new SendableChooser<>();
+    SendableChooser<DriveMode> driveModeChooser = new SendableChooser<>();
 
     /**
      * Construct an OperatorInput class that is fed by a DriverController and
@@ -37,7 +37,7 @@ public class OperatorInput extends SubsystemBase {
     public OperatorInput() {
 
         driverController = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT,
-            OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
+                OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
 
         // Initialize the dashboard selectors
         autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
@@ -72,27 +72,27 @@ public class OperatorInput extends SubsystemBase {
 
         // Cancel Command - cancels all running commands on all subsystems
         new Trigger(() -> isCancel())
-            .onTrue(new CancelCommand(this, driveSubsystem, elevatorSubsystem));
+                .onTrue(new CancelCommand(this, driveSubsystem, elevatorSubsystem));
 
         // Gyro and Encoder Reset
         new Trigger(() -> driverController.getBackButton())
-            .onTrue(new InstantCommand(() -> {
-                driveSubsystem.resetGyro();
-                driveSubsystem.resetEncoders();
-            }));
+                .onTrue(new InstantCommand(() -> {
+                    driveSubsystem.resetGyro();
+                    driveSubsystem.resetEncoders();
+                }));
 
         // Configure the DPAD to drive one meter on a heading
         new Trigger(() -> driverController.getPOV() == 0)
-            .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
+                .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
 
         new Trigger(() -> driverController.getPOV() == 90)
-            .onTrue(new DriveOnHeadingCommand(90, .5, 100, driveSubsystem));
+                .onTrue(new DriveOnHeadingCommand(90, .5, 100, driveSubsystem));
 
         new Trigger(() -> driverController.getPOV() == 180)
-            .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
+                .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
 
         new Trigger(() -> driverController.getPOV() == 270)
-            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
+                .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
     }
 
     /*
@@ -120,7 +120,7 @@ public class OperatorInput extends SubsystemBase {
      * They allow the default commands to get user input to manually move the
      * robot elements.
      */
-    /*
+ /*
      * Drive Subsystem
      */
     public DriveMode getSelectedDriveMode() {
@@ -166,20 +166,6 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Elevator Subsystem
      */
-    public boolean intakeCoral() {
-        return driverController.getLeftBumperButtonPressed();
-    }
-
-    public boolean scoreCoral() {
-        return driverController.getRightBumperButtonPressed();
-    }
-
-    /*
-     * TODO: Test that the POV axis is that golden axis
-     * public boolean Level0() {
-     * // return driverController.getPOV() == 180;
-     * }
-     */
     public boolean level1() {
         return driverController.getAButtonPressed();
     }
@@ -196,17 +182,23 @@ public class OperatorInput extends SubsystemBase {
         return driverController.getXButtonPressed();
     }
 
-    public boolean feeder() {
-        return driverController.getStartButtonPressed();
+    public boolean elevatorUp() {
+        return driverController.getPOV() == 0;
     }
 
-    public boolean feederstop() {
-        return driverController.getStartButtonReleased();
+    public boolean elevatorDown() {
+        return driverController.getPOV() == 180;
     }
 
-    /*
-     * Support for haptic feedback to the driver
-     */
+    public boolean intakeCoral() {
+        return driverController.getLeftBumperButton();
+    }
+
+    public boolean scoreCoral() {
+        return driverController.getRightBumperButton();
+    }
+
+    //* Support for haptic feedback to the driver
     public void startVibrate() {
         driverController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
     }

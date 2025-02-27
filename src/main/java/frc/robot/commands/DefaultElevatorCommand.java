@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.OperatorInput;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -33,6 +34,7 @@ public class DefaultElevatorCommand extends LoggingCommand {
     public void execute() {
         /*if (oi.level0()){
         }*/
+
         if (oi.level1()) {
             elevatorSubsystem.level(1);
         } else if (oi.level2()) {
@@ -42,6 +44,14 @@ public class DefaultElevatorCommand extends LoggingCommand {
         } else if (oi.level4()) {
             elevatorSubsystem.level(4);
         }
+
+        if (oi.elevatorUp()) {
+            elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED);
+        }
+        if (oi.elevatorDown()) {
+            elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED);
+        }
+
     }
 
     // Called once the command ends or is interrupted.
