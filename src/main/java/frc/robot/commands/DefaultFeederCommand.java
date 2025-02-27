@@ -4,14 +4,14 @@ import frc.robot.Constants;
 import frc.robot.OperatorInput;
 import frc.robot.subsystems.FeederSubsystem;
 
-public class FeederCommand extends LoggingCommand {
+public class DefaultFeederCommand extends LoggingCommand {
 
-    private final OperatorInput   operatorInput;
+    private final OperatorInput operatorInput;
     private final FeederSubsystem feederSubsystem;
 
-    public FeederCommand(OperatorInput operatorInput, FeederSubsystem feederSubsystem) {
+    public DefaultFeederCommand(OperatorInput operatorInput, FeederSubsystem feederSubsystem) {
 
-        this.operatorInput   = operatorInput;
+        this.operatorInput = operatorInput;
         this.feederSubsystem = feederSubsystem;
 
         addRequirements(feederSubsystem);
@@ -19,12 +19,15 @@ public class FeederCommand extends LoggingCommand {
 
     @Override
     public void execute() {
-        if (operatorInput.feeder()) {
+        if (operatorInput.intakeCoral()) {
             feederSubsystem.setMotorSpeed(Constants.FeederConstants.FEEDER_MOTOR_SPEED);
         }
-        if (operatorInput.feederstop()) {
+        if (operatorInput.scoreCoral()) {
+            feederSubsystem.setMotorSpeed(-Constants.FeederConstants.FEEDER_MOTOR_SPEED);
+        } else {
             feederSubsystem.stop();
         }
+
     }
 
     @Override
