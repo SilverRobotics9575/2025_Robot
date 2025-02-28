@@ -16,13 +16,14 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
- * The DriverController exposes all driver functions
+ * The operatorController exposes all driver functions
  * <p>
  * Extend SubsystemBase in order to have a built in periodic call to support
  * SmartDashboard updates
  */
 public class OperatorInput extends SubsystemBase {
 
+    private final GameController operatorController;
     private final GameController driverController;
 
     // Auto Setup Choosers
@@ -31,12 +32,14 @@ public class OperatorInput extends SubsystemBase {
     SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
 
     /**
-     * Construct an OperatorInput class that is fed by a DriverController and
+     * Construct an OperatorInput class that is fed by a operatorController and
      * optionally an OperatorController.
      */
     public OperatorInput() {
 
-        driverController = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT,
+        driverController   = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT,
+            OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
+        operatorController = new GameController(OperatorInputConstants.OPERATOR_CONTROLLER_PORT,
             OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
 
         // Initialize the dashboard selectors
@@ -111,7 +114,7 @@ public class OperatorInput extends SubsystemBase {
      * Do not end the command while the button is pressed
      */
     public boolean isCancel() {
-        return driverController.getStartButton();
+        return operatorController.getStartButton();
     }
 
     /*
@@ -183,20 +186,15 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean elevatorUp() {
-        return driverController.getAButton();
+        return operatorController.getYButton();
     }
 
     public boolean elevatorDown() {
-        return driverController.getYButton();
-    }
-
-
-    public boolean intakeCoral() {
-        return driverController.getLeftBumperButton();
+        return operatorController.getAButton();
     }
 
     public boolean scoreCoral() {
-        return driverController.getRightBumperButton();
+        return operatorController.getRightBumperButton();
     }
 
     // * Support for haptic feedback to the driver
@@ -204,13 +202,13 @@ public class OperatorInput extends SubsystemBase {
         driverController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
     }
 
-    public void stopVibrate() {
-        driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    public void stopVibrateOperator() {
+        operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("Driver Controller", driverController.toString());
+        SmartDashboard.putString("Driver Controller", operatorController.toString());
     }
 
 }
