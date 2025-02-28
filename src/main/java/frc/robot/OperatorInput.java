@@ -130,8 +130,8 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean isBoost() {
-        // Activates boost mode as long as left axis is held
-        return driverController.getLeftStickButtonPressed();
+        // Activates boost mode as long as left trigger is held
+        return driverController.getLeftTriggerAxis() > 0.5;
     }
 
     public boolean isSlow() {
@@ -190,10 +190,6 @@ public class OperatorInput extends SubsystemBase {
 
     public boolean elevatorDown() {
         return operatorController.getPOV() == 180;
-    }
-
-    public boolean intakeCoral() {
-        return operatorController.getLeftBumperButton();
     }
 
     public boolean scoreCoral() {

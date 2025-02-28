@@ -37,6 +37,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double elevatorSpeed = 0;
     private double elevatorCurrentTarget = ElevatorConstants.kFeederStation;
 
+    public enum ElevatorPosition {
+    }
+
     /**
      * Creates a new ElevatorSubsystem.
      */
