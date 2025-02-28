@@ -16,13 +16,14 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
- * The DriverController exposes all driver functions
+ * The operatorController exposes all driver functions
  * <p>
  * Extend SubsystemBase in order to have a built in periodic call to support
  * SmartDashboard updates
  */
 public class OperatorInput extends SubsystemBase {
 
+    private final GameController operatorController;
     private final GameController driverController;
 
     // Auto Setup Choosers
@@ -31,13 +32,14 @@ public class OperatorInput extends SubsystemBase {
     SendableChooser<DriveMode> driveModeChooser = new SendableChooser<>();
 
     /**
-     * Construct an OperatorInput class that is fed by a DriverController and
+     * Construct an OperatorInput class that is fed by a operatorController and
      * optionally an OperatorController.
      */
     public OperatorInput() {
 
-        driverController = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT,
+        operatorController = new GameController(OperatorInputConstants.OPERATOR_CONTROLLER_PORT,
                 OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
+        driverController = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT, OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
 
         // Initialize the dashboard selectors
         autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
@@ -75,23 +77,23 @@ public class OperatorInput extends SubsystemBase {
                 .onTrue(new CancelCommand(this, driveSubsystem, elevatorSubsystem));
 
         // Gyro and Encoder Reset
-        new Trigger(() -> driverController.getBackButton())
+        new Trigger(() -> operatorController.getBackButton())
                 .onTrue(new InstantCommand(() -> {
                     driveSubsystem.resetGyro();
                     driveSubsystem.resetEncoders();
                 }));
 
         // Configure the DPAD to drive one meter on a heading
-        new Trigger(() -> driverController.getPOV() == 0)
+        new Trigger(() -> operatorController.getPOV() == 0)
                 .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
 
-        new Trigger(() -> driverController.getPOV() == 90)
+        new Trigger(() -> operatorController.getPOV() == 90)
                 .onTrue(new DriveOnHeadingCommand(90, .5, 100, driveSubsystem));
 
-        new Trigger(() -> driverController.getPOV() == 180)
+        new Trigger(() -> operatorController.getPOV() == 180)
                 .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
 
-        new Trigger(() -> driverController.getPOV() == 270)
+        new Trigger(() -> operatorController.getPOV() == 270)
                 .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
     }
 
@@ -111,7 +113,7 @@ public class OperatorInput extends SubsystemBase {
      * Do not end the command while the button is pressed
      */
     public boolean isCancel() {
-        return driverController.getStartButton();
+        return operatorController.getStartButton();
     }
 
     /*
@@ -167,49 +169,49 @@ public class OperatorInput extends SubsystemBase {
      * Elevator Subsystem
      */
     public boolean level1() {
-        return driverController.getAButtonPressed();
+        return operatorController.getAButtonPressed();
     }
 
     public boolean level2() {
-        return driverController.getBButtonPressed();
+        return operatorController.getBButtonPressed();
     }
 
     public boolean level3() {
-        return driverController.getYButtonPressed();
+        return operatorController.getYButtonPressed();
     }
 
     public boolean level4() {
-        return driverController.getXButtonPressed();
+        return operatorController.getXButtonPressed();
     }
 
     public boolean elevatorUp() {
-        return driverController.getPOV() == 0;
+        return operatorController.getPOV() == 0;
     }
 
     public boolean elevatorDown() {
-        return driverController.getPOV() == 180;
+        return operatorController.getPOV() == 180;
     }
 
     public boolean intakeCoral() {
-        return driverController.getLeftBumperButton();
+        return operatorController.getLeftBumperButton();
     }
 
     public boolean scoreCoral() {
-        return driverController.getRightBumperButton();
+        return operatorController.getRightBumperButton();
     }
 
     //* Support for haptic feedback to the driver
-    public void startVibrate() {
-        driverController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+    public void startVibrateOperator() {
+        operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
     }
 
-    public void stopVibrate() {
-        driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    public void stopVibrateOperator() {
+        operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("Driver Controller", driverController.toString());
+        SmartDashboard.putString("Driver Controller", operatorController.toString());
     }
 
 }
