@@ -26,16 +26,16 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorSubsystem extends SubsystemBase {
 
     // private final LightsSubsystem lightsSubsystem;
-    private final SparkMax elevatorMotor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,
-            MotorType.kBrushless);
+    private final SparkMax            elevatorMotor                = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,
+        MotorType.kBrushless);
 
-    private final RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
+    private final RelativeEncoder     elevatorEncoder              = elevatorMotor.getEncoder();
 
     private SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
 
-    private double elevatorEncoderOffset = 0;
-    private double elevatorSpeed = 0;
-    private double elevatorCurrentTarget = ElevatorConstants.kFeederStation;
+    private double                    elevatorEncoderOffset        = 0;
+    private double                    elevatorSpeed                = 0;
+    private double                    elevatorCurrentTarget        = ElevatorConstants.kFeederStation;
 
     public enum ElevatorPosition {
     }
@@ -48,8 +48,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Configure the elevator motor
         SparkMaxConfig config = new SparkMaxConfig();
         config.inverted(ElevatorConstants.ELEVATOR_MOTOR_INVERTED)
-                .idleMode(IdleMode.kBrake)
-                .disableFollowerMode();
+            .idleMode(IdleMode.kBrake)
+            .disableFollowerMode();
         elevatorMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     }
@@ -60,18 +60,18 @@ public class ElevatorSubsystem extends SubsystemBase {
      */
     public void level(int level) {
         switch (level) {
-            /*
+        /*
          * case K_FEEDERSTATION ->
          * elevatorCurrentTarget = ElevatorConstants.kFeederStation;
-             */
-            case 1 ->
-                elevatorCurrentTarget = ElevatorConstants.kLevel1;
-            case 2 ->
-                elevatorCurrentTarget = ElevatorConstants.kLevel2;
-            case 3 ->
-                elevatorCurrentTarget = ElevatorConstants.kLevel3;
-            case 4 ->
-                elevatorCurrentTarget = ElevatorConstants.kLevel4;
+         */
+        case 1 ->
+            elevatorCurrentTarget = ElevatorConstants.kLevel1;
+        case 2 ->
+            elevatorCurrentTarget = ElevatorConstants.kLevel2;
+        case 3 ->
+            elevatorCurrentTarget = ElevatorConstants.kLevel3;
+        case 4 ->
+            elevatorCurrentTarget = ElevatorConstants.kLevel4;
         }
     }
 
@@ -82,7 +82,7 @@ public class ElevatorSubsystem extends SubsystemBase {
      */
     private void moveToSetpoint() {
         elevatorClosedLoopController.setReference(
-                elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+            elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
     }
 
     @Override
@@ -92,6 +92,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run
 
         // Display the position and target position of the elevator on the SmartDashboard
+        System.out.println(elevatorEncoder.getPosition());
         SmartDashboard.putNumber("Elevator Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Elevator Actual Position", elevatorEncoder.getPosition());
     }
