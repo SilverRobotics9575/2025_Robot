@@ -48,9 +48,9 @@ public final class Constants {
 
     public static final class FeederConstants {
 
-        public static final int    FEEDER_MOTOR_CAN_ID = 6;
-
-        public static final double FEEDER_MOTOR_SPEED  = 0.4;
+        public static final int     FEEDER_MOTOR_CAN_ID   = 6;
+        public static final boolean FEEDER_MOTOR_INVERTED = true;
+        public static final double  FEEDER_MOTOR_SPEED    = 0.4;
 
     }
 

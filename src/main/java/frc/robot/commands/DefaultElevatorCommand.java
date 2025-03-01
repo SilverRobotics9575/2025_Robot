@@ -51,11 +51,10 @@ public class DefaultElevatorCommand extends LoggingCommand {
         }
 
         if (oi.elevatorUp()) {
-            System.out.println("Elevator Up");
-            elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED);
+            elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false);
         }
         if (oi.elevatorDown()) {
-            elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED);
+            elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true);
         }
 
 

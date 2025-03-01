@@ -198,6 +198,14 @@ public class OperatorInput extends SubsystemBase {
         return operatorController.getRightBumperButton();
     }
 
+    public boolean reverseCoral() {
+        return operatorController.getLeftBumperButton();
+    }
+
+    public boolean stopCoral() {
+        return operatorController.getRightBumperButtonReleased();
+    }
+
     // * Support for haptic feedback to the driver
     public void startVibrate() {
         driverController.setRumble(GenericHID.RumbleType.kBothRumble, 1);

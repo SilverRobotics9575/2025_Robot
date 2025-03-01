@@ -22,6 +22,12 @@ public class DefaultFeederCommand extends LoggingCommand {
         if (operatorInput.scoreCoral()) {
             feederSubsystem.setMotorSpeed(-Constants.FeederConstants.FEEDER_MOTOR_SPEED);
         }
+        if (operatorInput.reverseCoral()) {
+            feederSubsystem.setMotorSpeed(Constants.FeederConstants.FEEDER_MOTOR_SPEED);
+        }
+        if (operatorInput.stopCoral()) {
+            feederSubsystem.stop();
+        }
     }
 
     @Override

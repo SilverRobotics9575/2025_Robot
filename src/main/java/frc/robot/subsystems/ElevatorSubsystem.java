@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -36,13 +37,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double                    elevatorEncoderOffset        = 0;
     private double                    elevatorSpeed                = 0;
     private double                    elevatorCurrentTarget        = ElevatorConstants.kFeederStation;
+    private final DigitalInput        minHeight                    = new DigitalInput(0);
 
     public enum ElevatorPosition {
     }
 
-    /**
-     * Creates a new ElevatorSubsystem.
-     */
+
     public ElevatorSubsystem(LightsSubsystem lightsSubsystem) {
 
         // Configure the elevator motor
@@ -90,16 +90,24 @@ public class ElevatorSubsystem extends SubsystemBase {
         moveToSetpoint();
         // zeroOnUserButton();
         // This method will be called once per scheduler run
-
         // Display the position and target position of the elevator on the SmartDashboard
-        System.out.println(elevatorEncoder.getPosition());
         SmartDashboard.putNumber("Elevator Target Position", elevatorCurrentTarget);
         SmartDashboard.putNumber("Elevator Actual Position", elevatorEncoder.getPosition());
     }
 
-    public void setElevatorSpeed(double motorSpeed) {
+
+    public void setElevatorSpeed(double motorSpeed, boolean down) {
         elevatorSpeed = motorSpeed;
-        elevatorMotor.set(motorSpeed);
+        /*
+         * System.out.println(minHeight.get());
+         * if (minHeight.get() && down) {
+         * System.out.println("WARNING: Minimum height reached");
+         * }
+         * else {
+         * elevatorMotor.set(elevatorSpeed);
+         * }
+         */
+        elevatorMotor.set(elevatorSpeed);
     }
 
     public void stop() {
