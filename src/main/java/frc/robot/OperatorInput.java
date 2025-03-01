@@ -82,7 +82,7 @@ public class OperatorInput extends SubsystemBase {
                 driveSubsystem.resetGyro();
                 driveSubsystem.resetEncoders();
             }));
-    };
+    }
 
     // Configure the DPAD to drive one meter on a heading
     /*
@@ -131,12 +131,10 @@ public class OperatorInput extends SubsystemBase {
         return driveModeChooser.getSelected();
     }
 
-    /*
-     * public boolean isBoost() {
-     * // Activates boost mode as long as left axis is held
-     * return driverController.getLeftStickButtonPressed();
-     * }
-     */
+    public boolean isBoost() {
+        // Activates boost mode as long as left axis is held
+        return driverController.getLeftStickButtonPressed();
+    }
 
     public boolean isSlow() {
         // If the dashboard chooses slow mode then all driving will become slow

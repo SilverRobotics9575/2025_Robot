@@ -14,7 +14,8 @@ import frc.robot.Constants;
 public class FeederSubsystem extends SubsystemBase {
 
     private double MotorSpeed = 0;
-    private final SparkMax feederMotor = new SparkMax(Constants.FeederConstants.FEEDER_MOTOR_CAN_ID, MotorType.kBrushless);
+    private final SparkMax feederMotor 
+        = new SparkMax(Constants.FeederConstants.FEEDER_MOTOR_CAN_ID, MotorType.kBrushless);
 
     // For now, this is a basic, bare-bones subsystem, since I need it to work by Saturday.
     public FeederSubsystem(LightsSubsystem lightsSubsystem) {
