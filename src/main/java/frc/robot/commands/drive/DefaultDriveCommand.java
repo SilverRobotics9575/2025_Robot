@@ -35,14 +35,14 @@ public class DefaultDriveCommand extends LoggingCommand {
     public void execute() {
 
         // Get the selected drive mode
-        DriveMode driveMode          = operatorInput.getSelectedDriveMode();
+        DriveMode driveMode = operatorInput.getSelectedDriveMode();
 
         // Calculate the drive scaling factor based on the boost mode and the slow mode.
-        double    driveScalingFactor = DriveConstants.DRIVE_SCALING_NORMAL;
+        double driveScalingFactor = DriveConstants.DRIVE_SCALING_NORMAL;
 
-        if (operatorInput.isBoost()) {
-            driveScalingFactor = DriveConstants.DRIVE_SCALING_BOOST;
-        }
+        // if (operatorInput.isBoost()) {
+        // driveScalingFactor = DriveConstants.DRIVE_SCALING_BOOST;
+        // }
         if (operatorInput.isSlow()) {
             driveScalingFactor = DriveConstants.DRIVE_SCALING_SLOW;
         }
