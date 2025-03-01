@@ -11,6 +11,7 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorInputConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.GameController;
+import frc.robot.commands.drive.DriveOnHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -82,23 +83,22 @@ public class OperatorInput extends SubsystemBase {
                 driveSubsystem.resetGyro();
                 driveSubsystem.resetEncoders();
             }));
+
+        // Configure the DPAD to drive one meter on a heading
+
+        new Trigger(() -> driverController.getPOV() == 0)
+            .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
+
+        new Trigger(() -> driverController.getPOV() == 90)
+            .onTrue(new DriveOnHeadingCommand(90, .5, 100, driveSubsystem));
+
+        new Trigger(() -> driverController.getPOV() == 180)
+            .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
+
+        new Trigger(() -> driverController.getPOV() == 270)
+            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
     }
 
-    // Configure the DPAD to drive one meter on a heading
-    /*
-     * new Trigger(() -> driverController.getPOV() == 0)
-     * .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
-     * 
-     * new Trigger(() -> driverController.getPOV() == 90)
-     * .onTrue(new DriveOnHeadingCommand(90, .5, 100, driveSubsystem));
-     * 
-     * new Trigger(() -> driverController.getPOV() == 180)
-     * .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
-     * 
-     * new Trigger(() -> driverController.getPOV() == 270)
-     * .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
-     * }
-     */
     /*
      * Auto Pattern Selectors
      */
@@ -131,10 +131,12 @@ public class OperatorInput extends SubsystemBase {
         return driveModeChooser.getSelected();
     }
 
-    public boolean isBoost() {
-        // Activates boost mode as long as left axis is held
-        return driverController.getLeftStickButtonPressed();
-    }
+    /*
+     * public boolean isBoost() {
+     * // Activates boost mode as long as left axis is held
+     * return driverController.getLeftStickButtonPressed();
+     * }
+     */
 
     public boolean isSlow() {
         // If the dashboard chooses slow mode then all driving will become slow

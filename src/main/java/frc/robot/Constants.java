@@ -61,24 +61,26 @@ public final class Constants {
         }
 
         // NOTE: Follower motors are at CAN_ID+1
-        public static final int     LEFT_MOTOR_CAN_ID    = 2;
-        public static final int     RIGHT_MOTOR_CAN_ID   = 4;
+        public static final int     LEFT_MOTOR_CAN_ID         = 1;
+        public static final int     LEFT_FOLLOW_MOTOR_CAN_ID  = 2;
+        public static final int     RIGHT_MOTOR_CAN_ID        = 3;
+        public static final int     RIGHT_FOLLOW_MOTOR_CAN_ID = 4;
 
-        public static final boolean LEFT_MOTOR_INVERTED  = false;
-        public static final boolean RIGHT_MOTOR_INVERTED = true;
+        public static final boolean LEFT_MOTOR_INVERTED       = false;
+        public static final boolean RIGHT_MOTOR_INVERTED      = true;
 
-        public static final double  CM_PER_ENCODER_COUNT = 3.503;
+        public static final double  CM_PER_ENCODER_COUNT      = 3.503;
 
-        public static final boolean GYRO_INVERTED        = false;
+        public static final boolean GYRO_INVERTED             = false;
 
         /**
          * Proportional gain for gyro pid tracking
          */
-        public static final double  GYRO_PID_KP          = 0.01;
+        public static final double  GYRO_PID_KP               = 0.01;
 
-        public static final double  DRIVE_SCALING_BOOST  = 1;
-        public static final double  DRIVE_SCALING_NORMAL = .6;
-        public static final double  DRIVE_SCALING_SLOW   = .3;
+        public static final double  DRIVE_SCALING_BOOST       = 1;
+        public static final double  DRIVE_SCALING_NORMAL      = .4;
+        public static final double  DRIVE_SCALING_SLOW        = .3;
     }
 
     public static final class LightsConstants {
