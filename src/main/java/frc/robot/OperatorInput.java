@@ -13,14 +13,17 @@ import frc.robot.commands.CancelCommand;
 import frc.robot.commands.GameController;
 import frc.robot.commands.drive.DriveOnHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
- * The DriverController exposes all driver functions
+ * The operatorController exposes all driver functions
  * <p>
- * Extend SubsystemBase in order to have a built in periodic call to support SmartDashboard updates
+ * Extend SubsystemBase in order to have a built in periodic call to support
+ * SmartDashboard updates
  */
 public class OperatorInput extends SubsystemBase {
 
+    private final GameController operatorController;
     private final GameController driverController;
 
     // Auto Setup Choosers
@@ -29,12 +32,14 @@ public class OperatorInput extends SubsystemBase {
     SendableChooser<DriveMode>   driveModeChooser   = new SendableChooser<>();
 
     /**
-     * Construct an OperatorInput class that is fed by a DriverController and optionally an
-     * OperatorController.
+     * Construct an OperatorInput class that is fed by a operatorController and
+     * optionally an OperatorController.
      */
     public OperatorInput() {
 
-        driverController = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT,
+        driverController   = new GameController(OperatorInputConstants.DRIVER_CONTROLLER_PORT,
+            OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
+        operatorController = new GameController(OperatorInputConstants.OPERATOR_CONTROLLER_PORT,
             OperatorInputConstants.DRIVER_CONTROLLER_DEADBAND);
 
         // Initialize the dashboard selectors
@@ -54,6 +59,7 @@ public class OperatorInput extends SubsystemBase {
         driveModeChooser.addOption("Tank", DriveMode.TANK);
         driveModeChooser.addOption("Single Stick (L)", DriveMode.SINGLE_STICK_LEFT);
         driveModeChooser.addOption("Single Stick (R)", DriveMode.SINGLE_STICK_RIGHT);
+        driveModeChooser.addOption("Slow Mode", DriveMode.SLOW_MODE);
     }
 
     /**
@@ -65,11 +71,11 @@ public class OperatorInput extends SubsystemBase {
      *
      * @param driveSubsystem
      */
-    public void configureButtonBindings(DriveSubsystem driveSubsystem) {
+    public void configureButtonBindings(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem) {
 
         // Cancel Command - cancels all running commands on all subsystems
         new Trigger(() -> isCancel())
-            .onTrue(new CancelCommand(this, driveSubsystem));
+            .onTrue(new CancelCommand(this, driveSubsystem, elevatorSubsystem));
 
         // Gyro and Encoder Reset
         new Trigger(() -> driverController.getBackButton())
@@ -79,6 +85,7 @@ public class OperatorInput extends SubsystemBase {
             }));
 
         // Configure the DPAD to drive one meter on a heading
+
         new Trigger(() -> driverController.getPOV() == 0)
             .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
 
@@ -108,7 +115,7 @@ public class OperatorInput extends SubsystemBase {
      * Do not end the command while the button is pressed
      */
     public boolean isCancel() {
-        return driverController.getStartButton();
+        return operatorController.getStartButton();
     }
 
     /*
@@ -124,12 +131,16 @@ public class OperatorInput extends SubsystemBase {
         return driveModeChooser.getSelected();
     }
 
-    public boolean isBoost() {
-        return driverController.getLeftBumperButton();
-    }
+    /*
+     * public boolean isBoost() {
+     * // Activates boost mode as long as left axis is held
+     * return driverController.getLeftStickButtonPressed();
+     * }
+     */
 
-    public boolean isSlowDown() {
-        return driverController.getRightBumperButton();
+    public boolean isSlow() {
+        // If the dashboard chooses slow mode then all driving will become slow
+        return (driveModeChooser.getSelected() == DriveMode.SLOW_MODE);
     }
 
     public double getLeftSpeed() {
@@ -159,20 +170,56 @@ public class OperatorInput extends SubsystemBase {
     }
 
     /*
-     * Support for haptic feedback to the driver
+     * Elevator Subsystem
      */
+    public boolean level1() {
+        return false;
+    }
+
+    public boolean level2() {
+        return false;
+    }
+
+    public boolean level3() {
+        return false;
+    }
+
+    public boolean level4() {
+        return false;
+    }
+
+    public boolean elevatorUp() {
+        return operatorController.getYButton();
+    }
+
+    public boolean elevatorDown() {
+        return operatorController.getAButton();
+    }
+
+    public boolean scoreCoral() {
+        return operatorController.getRightBumperButton();
+    }
+
+    public boolean reverseCoral() {
+        return operatorController.getLeftBumperButton();
+    }
+
+    public boolean stopCoral() {
+        return operatorController.getRightBumperButtonReleased();
+    }
+
+    // * Support for haptic feedback to the driver
     public void startVibrate() {
         driverController.setRumble(GenericHID.RumbleType.kBothRumble, 1);
     }
 
-    public void stopVibrate() {
-        driverController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+    public void stopVibrateOperator() {
+        operatorController.setRumble(GenericHID.RumbleType.kBothRumble, 0);
     }
-
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("Driver Controller", driverController.toString());
+        SmartDashboard.putString("Driver Controller", operatorController.toString());
     }
 
 }

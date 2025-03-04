@@ -21,7 +21,8 @@ public final class Constants {
 
     public static final class OperatorInputConstants {
 
-        public static final int DRIVER_CONTROLLER_PORT = 0;
+        public static final int    DRIVER_CONTROLLER_PORT     = 1;
+        public static final int    OPERATOR_CONTROLLER_PORT   = 0;
         public static final double DRIVER_CONTROLLER_DEADBAND = .2;
     }
 
@@ -32,36 +33,59 @@ public final class Constants {
         }
     }
 
+    public static final class ElevatorConstants {
+
+        public static final int     ELEVATOR_MOTOR_CAN_ID    = 7;
+        public static final boolean ELEVATOR_MOTOR_INVERTED  = false;
+        public static final double  CAN_ELEVATOR_MOTOR_SPEED = 0.8;
+
+        public static final int     kFeederStation           = 0;
+        public static final int     kLevel1                  = 0;
+        public static final int     kLevel2                  = 0;
+        public static final int     kLevel3                  = 100;
+        public static final int     kLevel4                  = 150;
+    }
+
+    public static final class FeederConstants {
+
+        public static final int     FEEDER_MOTOR_CAN_ID   = 6;
+        public static final boolean FEEDER_MOTOR_INVERTED = true;
+        public static final double  FEEDER_MOTOR_SPEED    = 0.4;
+
+    }
+
     public static final class DriveConstants {
 
         public static enum DriveMode {
-            TANK, ARCADE, SINGLE_STICK_LEFT, SINGLE_STICK_RIGHT;
+            TANK, ARCADE, SINGLE_STICK_LEFT, SINGLE_STICK_RIGHT, SLOW_MODE;
         }
 
         // NOTE: Follower motors are at CAN_ID+1
-        public static final int LEFT_MOTOR_CAN_ID = 6;
-        public static final int RIGHT_MOTOR_CAN_ID = 4;
+        public static final int     LEFT_MOTOR_CAN_ID         = 1;
+        public static final int     LEFT_FOLLOW_MOTOR_CAN_ID  = 2;
+        public static final int     RIGHT_MOTOR_CAN_ID        = 3;
+        public static final int     RIGHT_FOLLOW_MOTOR_CAN_ID = 4;
 
-        public static final boolean LEFT_MOTOR_INVERTED = false;
-        public static final boolean RIGHT_MOTOR_INVERTED = true;
+        public static final boolean LEFT_MOTOR_INVERTED       = false;
+        public static final boolean RIGHT_MOTOR_INVERTED      = true;
 
-        public static final double CM_PER_ENCODER_COUNT = 3.503;
+        public static final double  CM_PER_ENCODER_COUNT      = 3.503;
 
-        public static final boolean GYRO_INVERTED = false;
+        public static final boolean GYRO_INVERTED             = false;
 
         /**
          * Proportional gain for gyro pid tracking
          */
-        public static final double GYRO_PID_KP = 0.01;
+        public static final double  GYRO_PID_KP               = 0.01;
 
-        public static final double DRIVE_SCALING_BOOST = 1;
-        public static final double DRIVE_SCALING_NORMAL = .6;
-        public static final double DRIVE_SCALING_SLOW = .3;
+        public static final double  DRIVE_SCALING_BOOST       = 1;
+        public static final double  DRIVE_SCALING_NORMAL      = .4;
+        public static final double  DRIVE_SCALING_SLOW        = .3;
     }
 
     public static final class LightsConstants {
 
         public static final int LED_STRING_PWM_PORT = 0;
-        public static final int LED_STRING_LENGTH = 60;
+        public static final int LED_STRING_LENGTH   = 60;
     }
 }

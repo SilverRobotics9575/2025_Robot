@@ -35,15 +35,15 @@ public class DefaultDriveCommand extends LoggingCommand {
     public void execute() {
 
         // Get the selected drive mode
-        DriveMode driveMode          = operatorInput.getSelectedDriveMode();
+        DriveMode driveMode = operatorInput.getSelectedDriveMode();
 
         // Calculate the drive scaling factor based on the boost mode and the slow mode.
-        double    driveScalingFactor = DriveConstants.DRIVE_SCALING_NORMAL;
+        double driveScalingFactor = DriveConstants.DRIVE_SCALING_NORMAL;
 
-        if (operatorInput.isBoost()) {
-            driveScalingFactor = DriveConstants.DRIVE_SCALING_BOOST;
-        }
-        if (operatorInput.isSlowDown()) {
+        // if (operatorInput.isBoost()) {
+        // driveScalingFactor = DriveConstants.DRIVE_SCALING_BOOST;
+        // }
+        if (operatorInput.isSlow()) {
             driveScalingFactor = DriveConstants.DRIVE_SCALING_SLOW;
         }
 
@@ -78,7 +78,6 @@ public class DefaultDriveCommand extends LoggingCommand {
         logCommandEnd(interrupted);
     }
 
-
     /**
      * Set the motor speeds based on tank drive.
      *
@@ -94,10 +93,10 @@ public class DefaultDriveCommand extends LoggingCommand {
         setArcadeDriveMotorSpeeds(speed, turn, driveScalingFactor);
     }
 
-
     /**
-     * Calculate the scaled arcade drive speeds from the passed in values. In arcade mode, the turn
-     * is cut in half to help control the robot more consistently.
+     * Calculate the scaled arcade drive speeds from the passed in values. In
+     * arcade mode, the turn is cut in half to help control the robot more
+     * consistently.
      *
      * @param speed
      * @param turn
