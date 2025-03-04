@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.studica.frc.AHRS;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -61,21 +62,20 @@ public class DriveSubsystem extends SubsystemBase {
     private final LightsSubsystem     lightsSubsystem;
 
     // The motors on the left side of the drive.
-    private final SparkMax            leftPrimaryMotor   = new SparkMax(DriveConstants.LEFT_MOTOR_CAN_ID, MotorType.kBrushless);      // ID:
-                                                                                                                                      // 2
-    private final SparkMax            leftFollowerMotor  = new SparkMax(DriveConstants.LEFT_FOLLOW_MOTOR_CAN_ID,                      // ID:
-                                                                                                                                      // 3
-        MotorType.kBrushless);
+    private final SparkMax            leftPrimaryMotor   = new SparkMax(DriveConstants.LEFT_MOTOR_CAN_ID, MotorType.kBrushless);        // ID: 2
+    private final SparkMax            leftFollowerMotor  = new SparkMax(DriveConstants.LEFT_FOLLOW_MOTOR_CAN_ID, MotorType.kBrushless); // ID: 3
 
     // The motors on the right side of the drive.
-    private final SparkMax            rightPrimaryMotor  = new SparkMax(DriveConstants.RIGHT_MOTOR_CAN_ID, MotorType.kBrushless);     // ID:
-                                                                                                                                      // 4
-    private final SparkMax            rightFollowerMotor = new SparkMax(DriveConstants.RIGHT_FOLLOW_MOTOR_CAN_ID,                     // ID:
-                                                                                                                                      // 5
-        MotorType.kBrushless);
+    private final SparkMax            rightPrimaryMotor  = new SparkMax(DriveConstants.RIGHT_MOTOR_CAN_ID, MotorType.kBrushless);        // ID: 4
+    private final SparkMax            rightFollowerMotor = new SparkMax(DriveConstants.RIGHT_FOLLOW_MOTOR_CAN_ID, MotorType.kBrushless); // ID: 5
 
     private double                    leftSpeed          = 0;
     private double                    rightSpeed         = 0;
+
+    private double                    leftPreviousSpeed  = 0.0; // Store the left last speed
+    private double                    rightPreviousSpeed = 0.0; // Store the right last speed
+    
+    private double                    smoothingFactor    = 0.5; // Adjust between 0 (no change) and 1 (instant change)
 
     // Encoders
     private final RelativeEncoder     leftEncoder        = leftPrimaryMotor.getEncoder();
@@ -343,8 +343,16 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
 
-        this.leftSpeed  = leftSpeed;
-        this.rightSpeed = rightSpeed;
+        // Smooth out the speed using interpolation to avoid abrupt changes in speed
+        this.leftSpeed     = MathUtil.interpolate(leftPreviousSpeed, leftSpeed, smoothingFactor);
+        this.rightSpeed    = MathUtil.interpolate(rightPreviousSpeed, rightSpeed, smoothingFactor);
+
+        // Origianl code if new code doesn't work as expected
+        // this.leftSpeed = leftSpeed
+        // this.rightSpeed = rightSpeed
+
+        leftPreviousSpeed  = leftSpeed;
+        rightPreviousSpeed = rightSpeed;
 
         // NOTE: Follower motors are set to follow the primary motors
         leftPrimaryMotor.set(this.leftSpeed);
