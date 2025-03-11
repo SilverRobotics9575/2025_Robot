@@ -205,7 +205,7 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean stopCoral() {
-        return operatorController.getRightBumperButtonReleased();
+        return operatorController.getRightBumperButtonReleased() || operatorController.getLeftBumperButtonReleased();
     }
 
     // * Support for haptic feedback to the driver
