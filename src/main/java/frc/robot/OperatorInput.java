@@ -167,7 +167,7 @@ public class OperatorInput extends SubsystemBase {
             return driverController.getRightY();
         }
         if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
-            return operatorController.getRightY();
+            return operatorController.getLeftY();
         }
 
         return driverController.getLeftY();
@@ -179,7 +179,7 @@ public class OperatorInput extends SubsystemBase {
             return driverController.getLeftX();
         }
         if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
-            return operatorController.getLeftX();
+            return operatorController.getRightX();
         }
         return driverController.getRightX();
     }
