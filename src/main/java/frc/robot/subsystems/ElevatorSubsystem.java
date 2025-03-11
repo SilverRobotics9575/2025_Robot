@@ -98,13 +98,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void setElevatorSpeed(double motorSpeed, boolean down) {
         elevatorSpeed = motorSpeed;
+        
+        // Program for the limit switches
         /*
          * System.out.println(minHeight.get());
          * if (minHeight.get() && down) {
          * System.out.println("WARNING: Minimum height reached");
+         * SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
+         * }
+         * elif (maxHeight.get() && !down){
+         * System.out.println("WARNING: Maximum height reached")
+         * SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
          * }
          * else {
          * elevatorMotor.set(elevatorSpeed);
+         * SmartDashboard.putString("Limit Switch Status: OK")
          * }
          */
         elevatorMotor.set(elevatorSpeed);
