@@ -60,6 +60,7 @@ public class OperatorInput extends SubsystemBase {
         driveModeChooser.addOption("Single Stick (L)", DriveMode.SINGLE_STICK_LEFT);
         driveModeChooser.addOption("Single Stick (R)", DriveMode.SINGLE_STICK_RIGHT);
         driveModeChooser.addOption("Slow Mode", DriveMode.SLOW_MODE);
+        driveModeChooser.addOption("Single Joystick", DriveMode.SINGLE_JOYSTICK);
     }
 
     /**
@@ -144,10 +145,19 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public double getLeftSpeed() {
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getLeftY();
+        }
         return driverController.getLeftY();
+
+        
+
     }
 
     public double getRightSpeed() {
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getRightY();
+        }
         return driverController.getRightY();
     }
 
@@ -155,6 +165,9 @@ public class OperatorInput extends SubsystemBase {
 
         if (driveModeChooser.getSelected() == DriveMode.SINGLE_STICK_RIGHT) {
             return driverController.getRightY();
+        }
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getRightY();
         }
 
         return driverController.getLeftY();
@@ -165,7 +178,9 @@ public class OperatorInput extends SubsystemBase {
         if (driveModeChooser.getSelected() == DriveMode.SINGLE_STICK_LEFT) {
             return driverController.getLeftX();
         }
-
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getLeftX();
+        }
         return driverController.getRightX();
     }
 
