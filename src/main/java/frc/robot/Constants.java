@@ -81,6 +81,7 @@ public final class Constants {
         public static final double  DRIVE_SCALING_BOOST       = 1;
         public static final double  DRIVE_SCALING_NORMAL      = .4;
         public static final double  DRIVE_SCALING_SLOW        = .3;
+        public static final double SLEW_RATE_LIMIT = 0.5;
     }
 
     public static final class LightsConstants {

@@ -9,7 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.studica.frc.AHRS;
 
-import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -71,11 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private double                    leftSpeed          = 0;
     private double                    rightSpeed         = 0;
-
-    private double                    leftPreviousSpeed  = 0.0; // Store the left last speed
-    private double                    rightPreviousSpeed = 0.0; // Store the right last speed
-    
-    private double                    smoothingFactor    = 0.5; // Adjust between 0 (no change) and 1 (instant change)
+    private final SlewRateLimiter     filter             = new SlewRateLimiter(DriveConstants.SLEW_RATE_LIMIT);
 
     // Encoders
     private final RelativeEncoder     leftEncoder        = leftPrimaryMotor.getEncoder();
@@ -105,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
      * Creates a new DriveSubsystem.
      */
     public DriveSubsystem(LightsSubsystem lightsSubsystem) {
-
+        
         this.lightsSubsystem = lightsSubsystem;
 
         /*
@@ -343,20 +339,13 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void setMotorSpeeds(double leftSpeed, double rightSpeed) {
 
-        // Smooth out the speed using interpolation to avoid abrupt changes in speed
-        this.leftSpeed     = MathUtil.interpolate(leftPreviousSpeed, leftSpeed, smoothingFactor);
-        this.rightSpeed    = MathUtil.interpolate(rightPreviousSpeed, rightSpeed, smoothingFactor);
-
-        // Origianl code if new code doesn't work as expected
-        // this.leftSpeed = leftSpeed
-        // this.rightSpeed = rightSpeed
-
-        leftPreviousSpeed  = leftSpeed;
-        rightPreviousSpeed = rightSpeed;
+        this.leftSpeed     = leftSpeed;
+        this.rightSpeed    = rightSpeed;
 
         // NOTE: Follower motors are set to follow the primary motors
-        leftPrimaryMotor.set(this.leftSpeed);
-        rightPrimaryMotor.set(this.rightSpeed);
+        // The filter creates smoother driving by preventing a rate of change past 0.5 units per second
+        leftPrimaryMotor.set(filter.calculate(this.leftSpeed));
+        rightPrimaryMotor.set(filter.calculate(this.rightSpeed));
     }
 
     /**
