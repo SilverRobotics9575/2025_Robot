@@ -37,7 +37,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double                    elevatorEncoderOffset        = 0;
     private double                    elevatorSpeed                = 0;
     private double                    elevatorCurrentTarget        = ElevatorConstants.kFeederStation;
-    private final DigitalInput        minHeight                    = new DigitalInput(0);
+    private final DigitalInput        maxHeight                    = new DigitalInput(ElevatorConstants.MAXHEIGHT_ID);
+    private final DigitalInput        minHeight                    = new DigitalInput(ElevatorConstants.MINHEIGHT_ID);
 
     public enum ElevatorPosition {
     }
@@ -100,21 +101,21 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorSpeed = motorSpeed;
         
         // Program for the limit switches
-        /*
-         * System.out.println(minHeight.get());
-         * if (minHeight.get() && down) {
-         * System.out.println("WARNING: Minimum height reached");
-         * SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
-         * }
-         * elif (maxHeight.get() && !down){
-         * System.out.println("WARNING: Maximum height reached")
-         * SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
-         * }
-         * else {
-         * elevatorMotor.set(elevatorSpeed);
-         * SmartDashboard.putString("Limit Switch Status: OK")
-         * }
-         */
+        
+         System.out.println(minHeight.get());
+         if (minHeight.get() && down) {
+         System.out.println("WARNING: Minimum height reached");
+         SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
+            }
+         if (maxHeight.get() && !down){
+            System.out.println("WARNING: Maximum height reached")
+            SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
+            }
+         else {
+            elevatorMotor.set(elevatorSpeed);
+            SmartDashboard.putString("Limit Switch Status: OK")
+         }
+         
         elevatorMotor.set(elevatorSpeed);
     }
 

@@ -44,6 +44,10 @@ public final class Constants {
         public static final int     kLevel2                  = 0;
         public static final int     kLevel3                  = 100;
         public static final int     kLevel4                  = 150;
+
+        public static final int MAXHEIGHT_ID = 1;
+        public static final int MINHEIGHT_ID = 0;
+            
     }
 
     public static final class FeederConstants {
