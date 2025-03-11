@@ -29,7 +29,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static enum AutoPattern {
-            DO_NOTHING, DRIVE_FORWARD, BOX
+            DO_NOTHING, DRIVE_FORWARD, BOX, CENTER_LEVEL1;
         }
     }
 
