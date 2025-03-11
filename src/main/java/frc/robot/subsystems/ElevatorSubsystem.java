@@ -104,16 +104,16 @@ public class ElevatorSubsystem extends SubsystemBase {
         
          System.out.println(minHeight.get());
          if (minHeight.get() && down) {
-         System.out.println("WARNING: Minimum height reached");
-         SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
+            System.out.println("WARNING: Minimum height reached");
+            SmartDashboard.putString("Limit Switch Status", "WARNING: MIN HEIGHT");
             }
          if (maxHeight.get() && !down){
-            System.out.println("WARNING: Maximum height reached")
-            SmartDashboard.putString("Limit Switch Status: ⚠️ PRESSED ⚠️")
+            System.out.println("WARNING: Maximum height reached");
+            SmartDashboard.putString("Limit Switch Status", "WARNING: MAX HEIGHT");
             }
          else {
             elevatorMotor.set(elevatorSpeed);
-            SmartDashboard.putString("Limit Switch Status: OK")
+            SmartDashboard.putString("Limit Switch Status", "Ok");
          }
          
         elevatorMotor.set(elevatorSpeed);
