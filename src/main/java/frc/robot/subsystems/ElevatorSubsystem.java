@@ -61,18 +61,15 @@ public class ElevatorSubsystem extends SubsystemBase {
      */
     public void level(int level) {
         switch (level) {
-        /*
-         * case K_FEEDERSTATION ->
-         * elevatorCurrentTarget = ElevatorConstants.kFeederStation;
-         */
+
+        /*case kFeederStation ->
+            elevatorCurrentTarget = ElevatorConstants.kFeederStation; */
         case 1 ->
             elevatorCurrentTarget = ElevatorConstants.kLevel1;
         case 2 ->
             elevatorCurrentTarget = ElevatorConstants.kLevel2;
         case 3 ->
             elevatorCurrentTarget = ElevatorConstants.kLevel3;
-        case 4 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel4;
         }
     }
 

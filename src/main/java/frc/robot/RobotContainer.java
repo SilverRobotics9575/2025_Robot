@@ -61,7 +61,6 @@ public class RobotContainer {
         // Camera code
         UsbCamera camera = CameraServer.startAutomaticCapture();
         camera.setResolution(640, 480);
-
     }
 
     /**

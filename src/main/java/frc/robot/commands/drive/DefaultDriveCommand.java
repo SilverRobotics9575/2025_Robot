@@ -110,12 +110,13 @@ public class DefaultDriveCommand extends LoggingCommand {
         // Cut the spin in half because it will be applied to both sides.
         // Spinning at 1.0, should apply 0.5 to each side.
         turn = turn / 2.0;
+        /*The filter creates smoother driving by preventing a rate of change past 0.5 units per second
+        speed = filter.calculate(speed); */
 
         // Keep the turn, and reduce the forward speed where required to have the
         // maximum turn.
         if (Math.abs(speed) + Math.abs(turn) > 1.0) {
             speed = (1.0 - Math.abs(turn)) * Math.signum(speed);
-            speed = filter.calculate(speed);
         }
 
         double leftSpeed  = (speed + turn) * driveScalingFactor;

@@ -341,9 +341,6 @@ public class DriveSubsystem extends SubsystemBase {
         this.rightSpeed    = rightSpeed;
 
         // NOTE: Follower motors are set to follow the primary motors
-        // The filter creates smoother driving by preventing a rate of change past 0.5 units per second
-        /*leftPrimaryMotor.set(filter.calculate(this.leftSpeed));
-        rightPrimaryMotor.set(filter.calculate(this.rightSpeed));*/
         leftPrimaryMotor.set(this.leftSpeed);
         rightPrimaryMotor.set(this.rightSpeed);
     }
