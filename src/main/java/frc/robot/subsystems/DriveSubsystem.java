@@ -9,7 +9,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.studica.frc.AHRS;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -71,7 +70,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     private double                    leftSpeed          = 0;
     private double                    rightSpeed         = 0;
-    private final SlewRateLimiter     filter             = new SlewRateLimiter(DriveConstants.SLEW_RATE_LIMIT);
 
     // Encoders
     private final RelativeEncoder     leftEncoder        = leftPrimaryMotor.getEncoder();

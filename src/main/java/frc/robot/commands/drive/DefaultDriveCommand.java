@@ -1,5 +1,6 @@
 package frc.robot.commands.drive;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.OperatorInput;
@@ -10,6 +11,8 @@ public class DefaultDriveCommand extends LoggingCommand {
 
     private final DriveSubsystem driveSubsystem;
     private final OperatorInput  operatorInput;
+
+    private final SlewRateLimiter     filter             = new SlewRateLimiter(DriveConstants.SLEW_RATE_LIMIT);
 
     /**
      * Creates a new DefaultDriveCommand.
@@ -112,6 +115,7 @@ public class DefaultDriveCommand extends LoggingCommand {
         // maximum turn.
         if (Math.abs(speed) + Math.abs(turn) > 1.0) {
             speed = (1.0 - Math.abs(turn)) * Math.signum(speed);
+            speed = filter.calculate(speed);
         }
 
         double leftSpeed  = (speed + turn) * driveScalingFactor;
