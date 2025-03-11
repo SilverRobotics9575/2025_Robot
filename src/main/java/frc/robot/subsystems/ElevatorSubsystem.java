@@ -104,7 +104,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             System.out.println("WARNING: Minimum height reached");
             SmartDashboard.putString("Limit Switch Status", "WARNING: MIN HEIGHT");
             }
-         if (maxHeight.get() && !down){
+         else if (maxHeight.get() && !down){
             System.out.println("WARNING: Maximum height reached");
             SmartDashboard.putString("Limit Switch Status", "WARNING: MAX HEIGHT");
             }
