@@ -27,16 +27,14 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorSubsystem extends SubsystemBase {
 
     // private final LightsSubsystem lightsSubsystem;
-    private final SparkMax            elevatorMotor                = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,
-        MotorType.kBrushless);
-
+    private final SparkMax            elevatorMotor                = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,MotorType.kBrushless);
     private final RelativeEncoder     elevatorEncoder              = elevatorMotor.getEncoder();
-
     private SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
 
     private double                    elevatorEncoderOffset        = 0;
     private double                    elevatorSpeed                = 0;
-    private double                    elevatorCurrentTarget        = ElevatorConstants.kFeederStation;
+    private double                    elevatorCurrentTarget        = ElevatorConstants.LEVEL1; // The starting position should be at level 1
+
     private final DigitalInput        maxHeight                    = new DigitalInput(ElevatorConstants.MAXHEIGHT_ID);
     private final DigitalInput        minHeight                    = new DigitalInput(ElevatorConstants.MINHEIGHT_ID);
 
@@ -62,14 +60,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void level(int level) {
         switch (level) {
 
-        /*case kFeederStation ->
-            elevatorCurrentTarget = ElevatorConstants.kFeederStation; */
+        case 0 ->
+            elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION; 
         case 1 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel1;
+            elevatorCurrentTarget = ElevatorConstants.LEVEL1;
         case 2 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel2;
+            elevatorCurrentTarget = ElevatorConstants.LEVEL2;
         case 3 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel3;
+            elevatorCurrentTarget = ElevatorConstants.LEVEL3;
         }
     }
 
@@ -93,7 +91,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Elevator Actual Position", Math.round(elevatorEncoder.getPosition()) *100 / 100d);
     }
 
-
+    // The manual control method
     public void setElevatorSpeed(double motorSpeed, boolean down) {
         elevatorSpeed = motorSpeed;
         
@@ -112,8 +110,8 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorMotor.set(elevatorSpeed);
             SmartDashboard.putString("Limit Switch Status", "Ok");
          }
-         
-        elevatorMotor.set(elevatorSpeed);
+         // TODO: After limit switch is added delete this and test
+        // elevatorMotor.set(elevatorSpeed);
     }
 
     public void stop() {

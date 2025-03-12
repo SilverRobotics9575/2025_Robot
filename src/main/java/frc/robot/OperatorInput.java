@@ -215,6 +215,15 @@ public class OperatorInput extends SubsystemBase {
         return operatorController.getPOV() == 180;
     }
 
+   // TODO: Incorporate limit override in controllers
+    public boolean overrideLimit(){
+        // When the left trigger axis is held the limit switches wont work
+        return operatorController.getLeftTriggerAxis() > 0.5;
+    }
+    /*
+     * Coral Subsystem
+     */
+
     public boolean scoreCoral() {
         return operatorController.getRightBumperButton();
     }
