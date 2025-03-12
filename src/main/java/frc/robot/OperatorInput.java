@@ -115,7 +115,7 @@ public class OperatorInput extends SubsystemBase {
      * Do not end the command while the button is pressed
      */
     public boolean isCancel() {
-        return operatorController.getStartButton();
+        return operatorController.getStartButton() || driverController.getStartButton();
     }
 
     /*
