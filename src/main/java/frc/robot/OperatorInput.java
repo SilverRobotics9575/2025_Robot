@@ -186,21 +186,27 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Elevator Subsystem
      */
+    // The preset levels for the elevator
     public boolean feederStation(){
         return false;
+        //return operatorController.getAButtonPressed();
     }
     public boolean level1() {
         return false;
+        //return operatorController.getBButtonPressed();
     }
 
     public boolean level2() {
         return false;
+        //return operatorController.getYButtonPressed();
     }
 
     public boolean level3() {
         return false;
+        //return operatorController.getXButtonPressed();
     }
 
+    // The DPAD controlls elevator manually
     public boolean elevatorUp() {
         return operatorController.getPOV() == 0;
     }

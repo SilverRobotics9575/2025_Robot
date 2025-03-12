@@ -33,6 +33,7 @@ public class DefaultElevatorCommand extends LoggingCommand {
     @Override
     public void execute() {
 
+        // Robot is able to go to feeder station & level 1-3
         if (oi.feederStation()){
             elevatorSubsystem.level(0);
         }
@@ -45,6 +46,8 @@ public class DefaultElevatorCommand extends LoggingCommand {
         else if (oi.level3()) {
             elevatorSubsystem.level(3);
         }
+        
+        // Manual control buttons
         if (oi.elevatorUp()) {
             elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false);
         }
