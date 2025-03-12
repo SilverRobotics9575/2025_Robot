@@ -32,12 +32,12 @@ public class DefaultElevatorCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        /*
-         * if (oi.level0()){
-         * }
-         */
 
-        if (oi.level1()) {
+        // Robot is able to go to feeder station & level 1-3
+        if (oi.feederStation()){
+            elevatorSubsystem.level(0);
+        }
+        else if (oi.level1()) {
             elevatorSubsystem.level(1);
         }
         else if (oi.level2()) {
@@ -46,18 +46,14 @@ public class DefaultElevatorCommand extends LoggingCommand {
         else if (oi.level3()) {
             elevatorSubsystem.level(3);
         }
-        else if (oi.level4()) {
-            elevatorSubsystem.level(4);
-        }
-
+        
+        // Manual control buttons
         if (oi.elevatorUp()) {
             elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false);
         }
         else if (oi.elevatorDown()) {
             elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true);
         }
-
-
     }
 
     // Called once the command ends or is interrupted.

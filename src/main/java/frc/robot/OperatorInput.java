@@ -11,7 +11,6 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorInputConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.GameController;
-import frc.robot.commands.drive.DriveOnHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -86,7 +85,7 @@ public class OperatorInput extends SubsystemBase {
             }));
 
         // Configure the DPAD to drive one meter on a heading
-
+        /*
         new Trigger(() -> driverController.getPOV() == 0)
             .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
 
@@ -97,7 +96,7 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
 
         new Trigger(() -> driverController.getPOV() == 270)
-            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
+            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));*/
     }
 
     /*
@@ -187,29 +186,43 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Elevator Subsystem
      */
+    // The preset levels for the elevator
+    public boolean feederStation(){
+        return false;
+        //return operatorController.getAButtonPressed();
+    }
     public boolean level1() {
         return false;
+        //return operatorController.getBButtonPressed();
     }
 
     public boolean level2() {
         return false;
+        //return operatorController.getYButtonPressed();
     }
 
     public boolean level3() {
         return false;
+        //return operatorController.getXButtonPressed();
     }
 
-    public boolean level4() {
-        return false;
-    }
-
+    // The DPAD controlls elevator manually
     public boolean elevatorUp() {
-        return operatorController.getYButton();
+        return operatorController.getPOV() == 0;
     }
 
     public boolean elevatorDown() {
-        return operatorController.getAButton();
+        return operatorController.getPOV() == 180;
     }
+
+   // TODO: Incorporate limit override in controllers
+    public boolean overrideLimit(){
+        // When the left trigger axis is held the limit switches wont work
+        return operatorController.getLeftTriggerAxis() > 0.5;
+    }
+    /*
+     * Coral Subsystem
+     */
 
     public boolean scoreCoral() {
         return operatorController.getRightBumperButton();
