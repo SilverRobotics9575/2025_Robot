@@ -186,6 +186,9 @@ public class OperatorInput extends SubsystemBase {
     /*
      * Elevator Subsystem
      */
+    public boolean feederStation(){
+        return false;
+    }
     public boolean level1() {
         return false;
     }
@@ -195,10 +198,6 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean level3() {
-        return false;
-    }
-
-    public boolean level4() {
         return false;
     }
 
