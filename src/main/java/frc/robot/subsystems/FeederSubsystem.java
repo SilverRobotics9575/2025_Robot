@@ -43,7 +43,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     public void runMotor(){
-        feederMotor.set(1.0);
+        feederMotor.set(FeederConstants.FEEDER_MOTOR_SPEED); 
     }
 
 
