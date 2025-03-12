@@ -110,8 +110,6 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorMotor.set(elevatorSpeed);
             SmartDashboard.putString("Limit Switch Status", "Ok");
          }
-         // TODO: After limit switch is added delete this and test
-        // elevatorMotor.set(elevatorSpeed);
     }
 
     public void stop() {
