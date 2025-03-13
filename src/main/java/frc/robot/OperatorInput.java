@@ -218,7 +218,7 @@ public class OperatorInput extends SubsystemBase {
    // TODO: Incorporate limit override in controllers
     public boolean overrideLimit(){
         // When the left trigger axis is held the limit switches will be overrided
-        return operatorController.getLeftTriggerAxis() > 0.5;
+        return operatorController.getRightTriggerAxis() > 0.5;
     }
     /*
      * Coral Subsystem
