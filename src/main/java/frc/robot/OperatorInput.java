@@ -115,7 +115,7 @@ public class OperatorInput extends SubsystemBase {
      * Do not end the command while the button is pressed
      */
     public boolean isCancel() {
-        return operatorController.getStartButton();
+        return operatorController.getStartButton() || driverController.getStartButton();
     }
 
     /*
@@ -217,8 +217,8 @@ public class OperatorInput extends SubsystemBase {
 
    // TODO: Incorporate limit override in controllers
     public boolean overrideLimit(){
-        // When the left trigger axis is held the limit switches wont work
-        return operatorController.getLeftTriggerAxis() > 0.5;
+        // When the left trigger axis is held the limit switches will be overrided
+        return operatorController.getRightTriggerAxis() > 0.5;
     }
     /*
      * Coral Subsystem

@@ -92,26 +92,33 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // The manual control method
-    public void setElevatorSpeed(double motorSpeed, boolean down) {
+    public void setElevatorSpeed(double motorSpeed, boolean down, boolean isOverridePressed) {
         elevatorSpeed = motorSpeed;
         
-        // Program for the limit switches
-        
-         System.out.println(minHeight.get());
-         if (minHeight.get() && down) {
-            System.out.println("WARNING: Minimum height reached");
-            SmartDashboard.putString("Limit Switch Status", "WARNING: MIN HEIGHT");
-            }
-         else if (maxHeight.get() && !down){
-            System.out.println("WARNING: Maximum height reached");
-            SmartDashboard.putString("Limit Switch Status", "WARNING: MAX HEIGHT");
-            }
-         else {
+        if (isOverridePressed){
+            // Override limit switches
             elevatorMotor.set(elevatorSpeed);
-            SmartDashboard.putString("Limit Switch Status", "Ok");
-         }
-         // TODO: After limit switch is added delete this and test
-        // elevatorMotor.set(elevatorSpeed);
+            SmartDashboard.putString("Limit Switch Status", "Override");
+            System.out.println("Elevator limit overrided");
+        }
+        // Normal operation with limit switches
+        else {
+            // when minimum height is reached and controller is attempting to go down. STOP
+            if (minHeight.get() && down) {
+                System.out.println("WARNING: Minimum height reached");
+                SmartDashboard.putString("Limit Switch Status", "WARNING: MIN HEIGHT");
+                }
+            // When maximum height is reached and elevator is attempting to go up. STOP 
+            else if (maxHeight.get() && !down){
+                System.out.println("WARNING: Maximum height reached");
+                SmartDashboard.putString("Limit Switch Status", "WARNING: MAX HEIGHT");
+                }
+            // If all is good let the elevator run
+            else {
+                elevatorMotor.set(elevatorSpeed);
+                SmartDashboard.putString("Limit Switch Status", "Ok");
+            }
+        }
     }
 
     public void stop() {
