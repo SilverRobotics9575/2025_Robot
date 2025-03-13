@@ -217,7 +217,7 @@ public class OperatorInput extends SubsystemBase {
 
    // TODO: Incorporate limit override in controllers
     public boolean overrideLimit(){
-        // When the left trigger axis is held the limit switches wont work
+        // When the left trigger axis is held the limit switches will be overrided
         return operatorController.getLeftTriggerAxis() > 0.5;
     }
     /*
