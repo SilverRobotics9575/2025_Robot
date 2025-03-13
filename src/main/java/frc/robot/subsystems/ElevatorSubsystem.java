@@ -93,12 +93,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // The manual control method
     public void setElevatorSpeed(double motorSpeed, boolean down, boolean isOverridePressed) {
+        String limString = "Limit Switch Status";
         elevatorSpeed = motorSpeed;
         
         if (isOverridePressed){
             // Override limit switches
             elevatorMotor.set(elevatorSpeed);
-            SmartDashboard.putString("Limit Switch Status", "Override");
+            SmartDashboard.putString(limString, "Override");
             System.out.println("Elevator limit overrided");
         }
         // Normal operation with limit switches
@@ -106,17 +107,17 @@ public class ElevatorSubsystem extends SubsystemBase {
             // when minimum height is reached and controller is attempting to go down. STOP
             if (minHeight.get() && down) {
                 System.out.println("WARNING: Minimum height reached");
-                SmartDashboard.putString("Limit Switch Status", "WARNING: MIN HEIGHT");
+                SmartDashboard.putString(limString, "WARNING: MIN HEIGHT");
                 }
             // When maximum height is reached and elevator is attempting to go up. STOP 
             else if (maxHeight.get() && !down){
                 System.out.println("WARNING: Maximum height reached");
-                SmartDashboard.putString("Limit Switch Status", "WARNING: MAX HEIGHT");
+                SmartDashboard.putString(limString, "WARNING: MAX HEIGHT");
                 }
             // If all is good let the elevator run
             else {
                 elevatorMotor.set(elevatorSpeed);
-                SmartDashboard.putString("Limit Switch Status", "Ok");
+                SmartDashboard.putString(limString, "Ok");
             }
         }
     }
