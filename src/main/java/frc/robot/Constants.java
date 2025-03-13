@@ -83,7 +83,7 @@ public final class Constants {
         public static final double  GYRO_PID_KP               = 0.01;
 
         public static final double  DRIVE_SCALING_BOOST       = 0.5;
-        public static final double  DRIVE_SCALING_NORMAL      = .2;
+        public static final double  DRIVE_SCALING_NORMAL      = .4;
         public static final double  DRIVE_SCALING_SLOW        = .1;
         public static final double SLEW_RATE_LIMIT = 0.5;
     }
