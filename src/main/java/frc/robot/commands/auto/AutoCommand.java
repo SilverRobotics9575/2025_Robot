@@ -69,6 +69,7 @@ public class AutoCommand extends SequentialCommandGroup {
             addCommands(new DriveOnHeadingCommand(0, .4, 120, driveSubsystem));
             return;
 
+        // TODO: Test center level 1 auto
         // Scores a level1 coral in the center
         case CENTER_LEVEL1:
             // Drive forward 1.2m at .4 speed

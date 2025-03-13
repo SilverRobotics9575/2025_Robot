@@ -47,6 +47,7 @@ public class DefaultElevatorCommand extends LoggingCommand {
             elevatorSubsystem.level(3);
         }
         
+        // TODO: Test that the speeds accurately work
         // Manual control buttons
         if (oi.elevatorUp() > 0) {
             elevatorSubsystem.setElevatorSpeed(oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());

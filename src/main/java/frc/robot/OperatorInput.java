@@ -46,7 +46,7 @@ public class OperatorInput extends SubsystemBase {
         autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
         autoPatternChooser.addOption("Drive Forward", AutoPattern.DRIVE_FORWARD);
-        autoPatternChooser.addOption("Box", AutoPattern.BOX);
+        //autoPatternChooser.addOption("Box", AutoPattern.BOX);
         autoPatternChooser.setDefaultOption("Center Level 1", AutoPattern.CENTER_LEVEL1);
 
         waitTimeChooser.setDefaultOption("No wait", 0);
