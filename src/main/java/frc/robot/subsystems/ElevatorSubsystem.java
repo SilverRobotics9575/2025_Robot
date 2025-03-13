@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -29,7 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // private final LightsSubsystem lightsSubsystem;
     private final SparkMax            elevatorMotor                = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,MotorType.kBrushless);
     private final RelativeEncoder     elevatorEncoder              = elevatorMotor.getEncoder();
-    private SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
+    private final SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
 
     private double                    elevatorEncoderOffset        = 0;
     private double                    elevatorSpeed                = 0;
@@ -38,8 +39,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final DigitalInput        maxHeight                    = new DigitalInput(ElevatorConstants.MAXHEIGHT_ID);
     private final DigitalInput        minHeight                    = new DigitalInput(ElevatorConstants.MINHEIGHT_ID);
 
-    public enum ElevatorPosition {
-    }
+    private boolean wasResetByButton = false;
+    private boolean wasResetByLimit = false;
+
+
 
 
     public ElevatorSubsystem(LightsSubsystem lightsSubsystem) {
@@ -51,25 +54,25 @@ public class ElevatorSubsystem extends SubsystemBase {
             .disableFollowerMode();
         elevatorMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    }
 
+        elevatorEncoder.setPosition(0);
+    }
+    
+    public enum Setpoint {
+        FEEDER_STATION, LEVEL1, LEVEL2, LEVEL3;
+    }
     /**
-     * Command to set the subsystem setpoint. This will set the arm and elevator
-     * to their predefined positions for the given setpoint.
+     * Resets the elevator encoder to zero.
      */
-    public void level(int level) {
-        switch (level) {
-
-        case 0 ->
-            elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION; 
-        case 1 ->
-            elevatorCurrentTarget = ElevatorConstants.LEVEL1;
-        case 2 ->
-            elevatorCurrentTarget = ElevatorConstants.LEVEL2;
-        case 3 ->
-            elevatorCurrentTarget = ElevatorConstants.LEVEL3;
-        }
+    /*public void resetEncoders() {
+        // Reset the offsets so that the encoders are zeroed.
+        elevatorEncoderOffset  = 0;
+        elevatorEncoderOffset  = -getElevatorEncoder();
     }
+
+    public double getElevatorEncoder() {
+        return elevatorEncoder.getPosition() + elevatorEncoderOffset;
+    }*/
 
     /**
      * Drive the arm and elevator motors to their respective setpoints. This
@@ -81,10 +84,55 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
     }
 
+    // Zero the elevator encoder when the limit switch or a button is pressed
+    private void zeroElevatorOnLimit(){
+        if (minHeight.get() && !wasResetByLimit){
+            // Zero the encoder only when the limit switch is pressed
+            // to prevent constant zeroing while pressed
+            elevatorEncoder.setPosition(0);
+            wasResetByLimit = true;
+        }
+        else if (!minHeight.get()){
+            wasResetByLimit = false;
+        }
+    }
+
+    // Zero the encoder when the robo rio user button is
+    public void zeroOnUserButton(boolean resetEncoders) {
+        if (resetEncoders && !wasResetByButton){
+            // Zero the encoders only when the button switches from pressed 
+            // to prevent constant zeroing while pressed
+            wasResetByButton = true;
+            elevatorEncoder.setPosition(0);
+        }
+        else if (!resetEncoders){
+            wasResetByButton = false;
+        }
+    }
+    /**
+     * Command to set the subsystem setpoint. This will set the elevator
+     * to their predefined positions for the given setpoint.
+     */
+    public Command setSetpointCommand(Setpoint setpoint) {
+        return this.runOnce(
+            () -> {
+                switch (setpoint) {
+                case FEEDER_STATION ->
+                    elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION; 
+                case LEVEL1 ->
+                    elevatorCurrentTarget = ElevatorConstants.LEVEL1;
+                case LEVEL2 ->
+                    elevatorCurrentTarget = ElevatorConstants.LEVEL2;
+                case LEVEL3 ->
+                    elevatorCurrentTarget = ElevatorConstants.LEVEL3; 
+                }
+        });
+    }
+
     @Override
     public void periodic() {
         moveToSetpoint();
-        // zeroOnUserButton();
+        zeroElevatorOnLimit();
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
         SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
@@ -93,12 +141,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // The manual control method
     public void setElevatorSpeed(double motorSpeed, boolean down, boolean isOverridePressed) {
+        String limit = "Limit Switch Status";
         elevatorSpeed = motorSpeed;
         
         if (isOverridePressed){
             // Override limit switches
             elevatorMotor.set(elevatorSpeed);
-            SmartDashboard.putString("Limit Switch Status", "Override");
+            SmartDashboard.putString(limit, "Override");
             System.out.println("Elevator limit overrided");
         }
         // Normal operation with limit switches
@@ -106,12 +155,12 @@ public class ElevatorSubsystem extends SubsystemBase {
             // when minimum height is reached and controller is attempting to go down. STOP
             if (minHeight.get() && down) {
                 System.out.println("WARNING: Minimum height reached");
-                SmartDashboard.putString("Limit Switch Status", "WARNING: MIN HEIGHT");
+                SmartDashboard.putString(limit, "WARNING: MIN HEIGHT");
                 }
             // When maximum height is reached and elevator is attempting to go up. STOP 
             else if (maxHeight.get() && !down){
                 System.out.println("WARNING: Maximum height reached");
-                SmartDashboard.putString("Limit Switch Status", "WARNING: MAX HEIGHT");
+                SmartDashboard.putString(limit, "WARNING: MAX HEIGHT");
                 }
             // If all is good let the elevator run
             else {

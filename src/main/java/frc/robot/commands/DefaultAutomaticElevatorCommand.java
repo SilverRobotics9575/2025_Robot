@@ -3,12 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.OperatorInput;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DefaultElevatorCommand extends LoggingCommand {
+public class DefaultAutomaticElevatorCommand extends LoggingCommand {
 
     private final OperatorInput     oi;
     private final ElevatorSubsystem elevatorSubsystem;
@@ -16,7 +16,7 @@ public class DefaultElevatorCommand extends LoggingCommand {
     /**
      * Creates a new ElevatorCommand.
      */
-    public DefaultElevatorCommand(OperatorInput oi, ElevatorSubsystem elevatorSubsystem) {
+    public DefaultAutomaticElevatorCommand(OperatorInput oi, ElevatorSubsystem elevatorSubsystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(elevatorSubsystem);
         this.oi                = oi;
@@ -32,29 +32,22 @@ public class DefaultElevatorCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+    
         // Robot is able to go to feeder station & level 1-3
         if (oi.feederStation()){
-            elevatorSubsystem.level(0);
+            elevatorSubsystem.setSetpointCommand(Setpoint.FEEDER_STATION);
         }
         else if (oi.level1()) {
-            elevatorSubsystem.level(1);
+            elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL1);
         }
         else if (oi.level2()) {
-            elevatorSubsystem.level(2);
+            elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL2);
         }
         else if (oi.level3()) {
-            elevatorSubsystem.level(3);
-        }
-        
-        // Manual control buttons
-        if (oi.elevatorUp()) {
-            elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
-        }
-        else if (oi.elevatorDown()) {
-            elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
+            elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL3);
         }
     }
+    
 
     // Called once the command ends or is interrupted.
     @Override

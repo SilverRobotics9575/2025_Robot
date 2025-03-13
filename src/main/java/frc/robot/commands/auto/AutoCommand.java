@@ -14,7 +14,7 @@ import frc.robot.subsystems.FeederSubsystem;
 
 public class AutoCommand extends SequentialCommandGroup {
 
-    public AutoCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem, FeederSubsystem feederSubsystem, ElevatorSubsystem elevatorSubsystem) {
+    public AutoCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem, FeederSubsystem feederSubsystem) {
 
         // Default is to do nothing.
         // If more commands are added, the instant command will end and
