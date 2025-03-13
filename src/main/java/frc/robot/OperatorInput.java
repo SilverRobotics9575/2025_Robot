@@ -11,7 +11,6 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.Constants.OperatorInputConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.GameController;
-import frc.robot.commands.drive.DriveOnHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -47,6 +46,7 @@ public class OperatorInput extends SubsystemBase {
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
         autoPatternChooser.addOption("Drive Forward", AutoPattern.DRIVE_FORWARD);
         autoPatternChooser.addOption("Box", AutoPattern.BOX);
+        autoPatternChooser.setDefaultOption("Center Level 1", AutoPattern.CENTER_LEVEL1);
 
         waitTimeChooser.setDefaultOption("No wait", 0);
         SmartDashboard.putData("Auto Wait Time", waitTimeChooser);
@@ -60,6 +60,7 @@ public class OperatorInput extends SubsystemBase {
         driveModeChooser.addOption("Single Stick (L)", DriveMode.SINGLE_STICK_LEFT);
         driveModeChooser.addOption("Single Stick (R)", DriveMode.SINGLE_STICK_RIGHT);
         driveModeChooser.addOption("Slow Mode", DriveMode.SLOW_MODE);
+        driveModeChooser.addOption("Single Joystick", DriveMode.SINGLE_JOYSTICK);
     }
 
     /**
@@ -85,7 +86,7 @@ public class OperatorInput extends SubsystemBase {
             }));
 
         // Configure the DPAD to drive one meter on a heading
-
+        /*
         new Trigger(() -> driverController.getPOV() == 0)
             .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
 
@@ -96,7 +97,7 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
 
         new Trigger(() -> driverController.getPOV() == 270)
-            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));
+            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));*/
     }
 
     /*
@@ -115,7 +116,7 @@ public class OperatorInput extends SubsystemBase {
      * Do not end the command while the button is pressed
      */
     public boolean isCancel() {
-        return operatorController.getStartButton();
+        return operatorController.getStartButton() || driverController.getStartButton();
     }
 
     /*
@@ -144,10 +145,19 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public double getLeftSpeed() {
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getLeftY();
+        }
         return driverController.getLeftY();
+
+        
+
     }
 
     public double getRightSpeed() {
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getRightY();
+        }
         return driverController.getRightY();
     }
 
@@ -155,6 +165,9 @@ public class OperatorInput extends SubsystemBase {
 
         if (driveModeChooser.getSelected() == DriveMode.SINGLE_STICK_RIGHT) {
             return driverController.getRightY();
+        }
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getLeftY();
         }
 
         return driverController.getLeftY();
@@ -165,36 +178,51 @@ public class OperatorInput extends SubsystemBase {
         if (driveModeChooser.getSelected() == DriveMode.SINGLE_STICK_LEFT) {
             return driverController.getLeftX();
         }
-
+        if (driveModeChooser.getSelected() == DriveMode.SINGLE_JOYSTICK){
+            return operatorController.getRightX();
+        }
         return driverController.getRightX();
     }
 
     /*
      * Elevator Subsystem
      */
+    // The preset levels for the elevator
+    public boolean feederStation(){
+        return false;
+        //return operatorController.getAButtonPressed();
+    }
     public boolean level1() {
         return false;
+        //return operatorController.getBButtonPressed();
     }
 
     public boolean level2() {
         return false;
+        //return operatorController.getYButtonPressed();
     }
 
     public boolean level3() {
         return false;
+        //return operatorController.getXButtonPressed();
     }
 
-    public boolean level4() {
-        return false;
-    }
-
+    // The DPAD controlls elevator manually
     public boolean elevatorUp() {
-        return operatorController.getYButton();
+        return operatorController.getPOV() == 0;
     }
 
     public boolean elevatorDown() {
-        return operatorController.getAButton();
+        return operatorController.getPOV() == 180;
     }
+
+    public boolean overrideLimit(){
+        // When the right trigger axis is held the limit switches will be overrided
+        return operatorController.getRightTriggerAxis() > 0.5;
+    }
+    /*
+     * Coral Subsystem
+     */
 
     public boolean scoreCoral() {
         return operatorController.getRightBumperButton();
@@ -205,7 +233,7 @@ public class OperatorInput extends SubsystemBase {
     }
 
     public boolean stopCoral() {
-        return operatorController.getRightBumperButtonReleased();
+        return operatorController.getRightBumperButtonReleased() || operatorController.getLeftBumperButtonReleased();
     }
 
     // * Support for haptic feedback to the driver

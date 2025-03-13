@@ -9,10 +9,12 @@ import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.OperatorInput;
 import frc.robot.commands.drive.DriveOnHeadingCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 
 public class AutoCommand extends SequentialCommandGroup {
 
-    public AutoCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem) {
+    public AutoCommand(OperatorInput operatorInput, DriveSubsystem driveSubsystem, FeederSubsystem feederSubsystem, ElevatorSubsystem elevatorSubsystem) {
 
         // Default is to do nothing.
         // If more commands are added, the instant command will end and
@@ -67,7 +69,23 @@ public class AutoCommand extends SequentialCommandGroup {
             addCommands(new DriveOnHeadingCommand(0, .4, 120, driveSubsystem));
             return;
 
-        case BOX:
+        // Scores a level1 coral in the center
+        case CENTER_LEVEL1:
+            // Drive forward 1.2m at .4 speed
+            addCommands(new DriveOnHeadingCommand(0, .4, 120, driveSubsystem));
+            // Runs the motor for 2 seconds then stops
+            addCommands(
+                new InstantCommand(() -> feederSubsystem.runMotor())
+                    .andThen(new WaitCommand(2))
+                    .andThen(new InstantCommand(() -> feederSubsystem.stop()))
+            );
+            // Runs backwards 0.6m at 0.4 speed
+            addCommands(new DriveOnHeadingCommand(0, -0.4, 60, driveSubsystem));
+            return;
+
+
+        // Unecessary auto for our use
+       /* case BOX:
 
             // Set the current heading to zero, the gyro could have drifted while
             // waiting for auto to start.
@@ -79,7 +97,7 @@ public class AutoCommand extends SequentialCommandGroup {
             addCommands(new DriveOnHeadingCommand(180, .1, 100, false, driveSubsystem));
             addCommands(new DriveOnHeadingCommand(90, .1, 100, false, driveSubsystem));
             addCommands(new DriveOnHeadingCommand(0, .1, 100, driveSubsystem));
-            return;
+            return;*/
         }
     }
 }

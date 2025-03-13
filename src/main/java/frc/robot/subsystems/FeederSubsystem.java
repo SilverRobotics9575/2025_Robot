@@ -9,7 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.FeederConstants;;
+import frc.robot.Constants.FeederConstants;
 
 public class FeederSubsystem extends SubsystemBase {
 
@@ -40,5 +40,10 @@ public class FeederSubsystem extends SubsystemBase {
     public void stop() {
         feederMotor.set(0);
     }
+
+    public void runMotor(){
+        feederMotor.set(FeederConstants.FEEDER_MOTOR_SPEED); 
+    }
+
 
 }

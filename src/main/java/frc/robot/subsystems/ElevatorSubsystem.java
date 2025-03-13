@@ -27,17 +27,16 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorSubsystem extends SubsystemBase {
 
     // private final LightsSubsystem lightsSubsystem;
-    private final SparkMax            elevatorMotor                = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,
-        MotorType.kBrushless);
-
+    private final SparkMax            elevatorMotor                = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID,MotorType.kBrushless);
     private final RelativeEncoder     elevatorEncoder              = elevatorMotor.getEncoder();
-
     private SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
 
     private double                    elevatorEncoderOffset        = 0;
     private double                    elevatorSpeed                = 0;
-    private double                    elevatorCurrentTarget        = ElevatorConstants.kFeederStation;
-    private final DigitalInput        minHeight                    = new DigitalInput(0);
+    private double                    elevatorCurrentTarget        = ElevatorConstants.LEVEL1; // The starting position should be at level 1
+
+    private final DigitalInput        maxHeight                    = new DigitalInput(ElevatorConstants.MAXHEIGHT_ID);
+    private final DigitalInput        minHeight                    = new DigitalInput(ElevatorConstants.MINHEIGHT_ID);
 
     public enum ElevatorPosition {
     }
@@ -60,18 +59,15 @@ public class ElevatorSubsystem extends SubsystemBase {
      */
     public void level(int level) {
         switch (level) {
-        /*
-         * case K_FEEDERSTATION ->
-         * elevatorCurrentTarget = ElevatorConstants.kFeederStation;
-         */
+
+        case 0 ->
+            elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION; 
         case 1 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel1;
+            elevatorCurrentTarget = ElevatorConstants.LEVEL1;
         case 2 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel2;
+            elevatorCurrentTarget = ElevatorConstants.LEVEL2;
         case 3 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel3;
-        case 4 ->
-            elevatorCurrentTarget = ElevatorConstants.kLevel4;
+            elevatorCurrentTarget = ElevatorConstants.LEVEL3;
         }
     }
 
@@ -91,23 +87,39 @@ public class ElevatorSubsystem extends SubsystemBase {
         // zeroOnUserButton();
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
-        SmartDashboard.putNumber("Elevator Target Position", elevatorCurrentTarget);
-        SmartDashboard.putNumber("Elevator Actual Position", elevatorEncoder.getPosition());
+        SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
+        SmartDashboard.putNumber("Elevator Actual Position", Math.round(elevatorEncoder.getPosition()) *100 / 100d);
     }
 
-
-    public void setElevatorSpeed(double motorSpeed, boolean down) {
+    // The manual control method
+    public void setElevatorSpeed(double motorSpeed, boolean down, boolean isOverridePressed) {
+        String limString = "Limit Switch Status";
         elevatorSpeed = motorSpeed;
-        /*
-         * System.out.println(minHeight.get());
-         * if (minHeight.get() && down) {
-         * System.out.println("WARNING: Minimum height reached");
-         * }
-         * else {
-         * elevatorMotor.set(elevatorSpeed);
-         * }
-         */
-        elevatorMotor.set(elevatorSpeed);
+        
+        if (isOverridePressed){
+            // Override limit switches
+            elevatorMotor.set(elevatorSpeed);
+            SmartDashboard.putString(limString, "Override");
+            System.out.println("Elevator limit overrided");
+        }
+        // Normal operation with limit switches
+        else {
+            // when minimum height is reached and controller is attempting to go down. STOP
+            if (minHeight.get() && down) {
+                System.out.println("WARNING: Minimum height reached");
+                SmartDashboard.putString(limString, "WARNING: MIN HEIGHT");
+                }
+            // When maximum height is reached and elevator is attempting to go up. STOP 
+            else if (maxHeight.get() && !down){
+                System.out.println("WARNING: Maximum height reached");
+                SmartDashboard.putString(limString, "WARNING: MAX HEIGHT");
+                }
+            // If all is good let the elevator run
+            else {
+                elevatorMotor.set(elevatorSpeed);
+                SmartDashboard.putString(limString, "Ok");
+            }
+        }
     }
 
     public void stop() {

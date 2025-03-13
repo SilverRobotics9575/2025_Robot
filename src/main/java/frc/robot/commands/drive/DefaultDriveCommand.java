@@ -1,5 +1,6 @@
 package frc.robot.commands.drive;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.OperatorInput;
@@ -10,6 +11,8 @@ public class DefaultDriveCommand extends LoggingCommand {
 
     private final DriveSubsystem driveSubsystem;
     private final OperatorInput  operatorInput;
+
+    private final SlewRateLimiter     filter             = new SlewRateLimiter(DriveConstants.SLEW_RATE_LIMIT);
 
     /**
      * Creates a new DefaultDriveCommand.
@@ -107,6 +110,8 @@ public class DefaultDriveCommand extends LoggingCommand {
         // Cut the spin in half because it will be applied to both sides.
         // Spinning at 1.0, should apply 0.5 to each side.
         turn = turn / 2.0;
+        /*The filter creates smoother driving by preventing a rate of change past 0.5 units per second
+        speed = filter.calculate(speed); */
 
         // Keep the turn, and reduce the forward speed where required to have the
         // maximum turn.

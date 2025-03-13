@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -15,7 +17,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LightsSubsystem;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -56,6 +57,10 @@ public class RobotContainer {
         // This can happen also if there is a brown-out of the RoboRIO.
         new Trigger(() -> RobotState.isEnabled())
             .onTrue(new InstantCommand(() -> lightsSubsystem.setRSLFlashCount(5)));
+
+        // Camera code
+        UsbCamera camera = CameraServer.startAutomaticCapture();
+        camera.setResolution(640, 480);
     }
 
     /**
@@ -64,6 +69,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return new AutoCommand(oi, driveSubsystem);
+        return new AutoCommand(oi, driveSubsystem, feederSubsystem, elevatorSubsystem);
     }
 }

@@ -29,7 +29,7 @@ public final class Constants {
     public static final class AutoConstants {
 
         public static enum AutoPattern {
-            DO_NOTHING, DRIVE_FORWARD, BOX
+            DO_NOTHING, DRIVE_FORWARD, BOX, CENTER_LEVEL1;
         }
     }
 
@@ -39,11 +39,14 @@ public final class Constants {
         public static final boolean ELEVATOR_MOTOR_INVERTED  = false;
         public static final double  CAN_ELEVATOR_MOTOR_SPEED = 0.8;
 
-        public static final int     kFeederStation           = 0;
-        public static final int     kLevel1                  = 0;
-        public static final int     kLevel2                  = 0;
-        public static final int     kLevel3                  = 100;
-        public static final int     kLevel4                  = 150;
+        public static final int     FEEDER_STATION           = 0;
+        public static final int     LEVEL1                  = 0;
+        public static final int     LEVEL2                  = 0;
+        public static final int     LEVEL3                  = 100;
+
+        public static final int MAXHEIGHT_ID = 1;
+        public static final int MINHEIGHT_ID = 0;
+            
     }
 
     public static final class FeederConstants {
@@ -57,7 +60,7 @@ public final class Constants {
     public static final class DriveConstants {
 
         public static enum DriveMode {
-            TANK, ARCADE, SINGLE_STICK_LEFT, SINGLE_STICK_RIGHT, SLOW_MODE;
+            TANK, ARCADE, SINGLE_STICK_LEFT, SINGLE_STICK_RIGHT, SLOW_MODE, SINGLE_JOYSTICK;
         }
 
         // NOTE: Follower motors are at CAN_ID+1
@@ -78,9 +81,10 @@ public final class Constants {
          */
         public static final double  GYRO_PID_KP               = 0.01;
 
-        public static final double  DRIVE_SCALING_BOOST       = 1;
+        public static final double  DRIVE_SCALING_BOOST       = 0.7;
         public static final double  DRIVE_SCALING_NORMAL      = .4;
-        public static final double  DRIVE_SCALING_SLOW        = .3;
+        public static final double  DRIVE_SCALING_SLOW        = .2;
+        public static final double SLEW_RATE_LIMIT = 0.5;
     }
 
     public static final class LightsConstants {
