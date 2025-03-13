@@ -48,6 +48,7 @@ public class RobotContainer {
             new DefaultDriveCommand(oi, driveSubsystem));
         elevatorSubsystem.setDefaultCommand(new DefaultAutomaticElevatorCommand(oi, elevatorSubsystem));
         feederSubsystem.setDefaultCommand(new DefaultFeederCommand(oi, feederSubsystem));
+
         // Configure the button bindings - pass in all subsystems
         oi.configureButtonBindings(driveSubsystem, elevatorSubsystem, feederSubsystem);
 

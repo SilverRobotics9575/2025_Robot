@@ -14,6 +14,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -156,6 +157,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             if (minHeight.get() && down) {
                 System.out.println("WARNING: Minimum height reached");
                 SmartDashboard.putString(limit, "WARNING: MIN HEIGHT");
+                setElevatorHigher();
                 }
             // When maximum height is reached and elevator is attempting to go up. STOP 
             else if (maxHeight.get() && !down){
@@ -168,6 +170,15 @@ public class ElevatorSubsystem extends SubsystemBase {
                 SmartDashboard.putString("Limit Switch Status", "Ok");
             }
         }
+    }
+
+    // Slightly raises the elevator 0.02 meters higher to not hurt the limit switch
+    public void setElevatorHigher(){
+        elevatorMotor.set(.01);
+        Timer.delay(2);
+        elevatorMotor.set(0);
+
+
     }
 
     public void stop() {

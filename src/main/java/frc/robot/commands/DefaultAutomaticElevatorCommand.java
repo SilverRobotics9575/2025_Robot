@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.OperatorInput;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
@@ -31,8 +32,8 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
-    public void execute() {
-    
+      public void execute() {
+
         // Robot is able to go to feeder station & level 1-3
         if (oi.feederStation()){
             elevatorSubsystem.setSetpointCommand(Setpoint.FEEDER_STATION);
@@ -45,6 +46,15 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
         }
         else if (oi.level3()) {
             elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL3);
+        }
+        else {
+            // Manual control buttons
+            if (oi.elevatorUp()) {
+                elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
+            }
+            else if (oi.elevatorDown()) {
+                elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
+            }
         }
     }
     
