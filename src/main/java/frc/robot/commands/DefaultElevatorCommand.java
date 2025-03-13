@@ -48,10 +48,10 @@ public class DefaultElevatorCommand extends LoggingCommand {
         }
         
         // Manual control buttons
-        if (oi.elevatorUp() > 0.01) {
+        if (oi.elevatorUp() > 0) {
             elevatorSubsystem.setElevatorSpeed(oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
         }
-        else if (oi.elevatorDown() > 0.01) {
+        else if (oi.elevatorDown() > 0) {
             elevatorSubsystem.setElevatorSpeed(- oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
         }
     }
