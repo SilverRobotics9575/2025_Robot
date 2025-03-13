@@ -128,8 +128,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     // TODO: Test and incorporate to main
     private void setElevatorHigher(){
         if (minHeight.get()){
-            elevatorMotor.set(0.2);
-            Timer.delay(0.2);
+            elevatorMotor.set(ElevatorConstants.ELEVATOR_REBOUND_SPEED);
+            Timer.delay(ElevatorConstants.ELEVATOR_REBOUND_TIME);
             elevatorMotor.set(0);
         }
     }
