@@ -13,7 +13,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -124,13 +123,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Slightly sets the elevator higher after the minimum height is triggered
     // TODO: Adjust speed and time for targeted position
-    public void setElevatorHigher(){
+    /*public void setElevatorHigher(){
         if (minHeight.get()){
             elevatorMotor.set(0.2);
             Timer.delay(0.2);
             elevatorMotor.set(0);
         }
-    }
+    }*/
 
     public void stop() {
         elevatorMotor.set(0);
