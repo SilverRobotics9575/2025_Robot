@@ -100,7 +100,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (isOverridePressed){
             // Override limit switches
             elevatorMotor.set(elevatorSpeed);
-            SmartDashboard.putString(limString, "Override");
+            SmartDashboard.putString(limString, "OVERIDED");
             System.out.println("WARNING: Elevator limit overrided");
         }
         // Normal operation with limit switches
