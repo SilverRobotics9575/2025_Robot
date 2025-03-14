@@ -118,14 +118,14 @@ public class ElevatorSubsystem extends SubsystemBase {
         return this.runOnce(
             () -> {
                 switch (setpoint) {
-                case FEEDER_STATION ->
-                    elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION; 
-                case LEVEL1 ->
-                    elevatorCurrentTarget = ElevatorConstants.LEVEL1;
-                case LEVEL2 ->
-                    elevatorCurrentTarget = ElevatorConstants.LEVEL2;
-                case LEVEL3 ->
-                    elevatorCurrentTarget = ElevatorConstants.LEVEL3; 
+                    case FEEDER_STATION ->
+                        elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION; 
+                    case LEVEL1 ->
+                        elevatorCurrentTarget = ElevatorConstants.LEVEL1;
+                    case LEVEL2 ->
+                        elevatorCurrentTarget = ElevatorConstants.LEVEL2;
+                    case LEVEL3 ->
+                        elevatorCurrentTarget = ElevatorConstants.LEVEL3; 
                 }
         });
     }
@@ -136,7 +136,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         zeroElevatorOnLimit();
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
-        // SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
+        SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
         SmartDashboard.putNumber("Elevator Actual Position", Math.round(elevatorEncoder.getPosition()) *100 / 100d);
     }
 
