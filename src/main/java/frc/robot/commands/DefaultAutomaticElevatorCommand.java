@@ -47,14 +47,14 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
         else if (oi.level3()) {
             elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL3);
         }
-        else {
-            // Manual control buttons
-            if (oi.elevatorUp()) {
-                elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
-            }
-            else if (oi.elevatorDown()) {
-                elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
-            }
+        
+        // TODO: Test that the speeds accurately work
+        // Manual control buttons
+        if (oi.elevatorUp() > 0) {
+            elevatorSubsystem.setElevatorSpeed(oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
+        }
+        else if (oi.elevatorDown() > 0) {
+            elevatorSubsystem.setElevatorSpeed(- oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
         }
     }
     

@@ -355,6 +355,7 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
+        // TODO: Check the velocity accuracy on both motors
         lightsSubsystem.setDriveMotorSpeeds(leftSpeed, rightSpeed);
 
         SmartDashboard.putNumber("Right Motor", rightSpeed);

@@ -136,49 +136,50 @@ public class ElevatorSubsystem extends SubsystemBase {
         zeroElevatorOnLimit();
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
-        SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
+        // SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
         SmartDashboard.putNumber("Elevator Actual Position", Math.round(elevatorEncoder.getPosition()) *100 / 100d);
     }
 
     // The manual control method
     public void setElevatorSpeed(double motorSpeed, boolean down, boolean isOverridePressed) {
-        String limit = "Limit Switch Status";
+        String limString = "Limit Switch Status";
         elevatorSpeed = motorSpeed;
         
         if (isOverridePressed){
             // Override limit switches
             elevatorMotor.set(elevatorSpeed);
-            SmartDashboard.putString(limit, "Override");
-            System.out.println("Elevator limit overrided");
+            SmartDashboard.putString(limString, "Override");
+            System.out.println("WARNING: Elevator limit overrided");
         }
         // Normal operation with limit switches
         else {
             // when minimum height is reached and controller is attempting to go down. STOP
             if (minHeight.get() && down) {
                 System.out.println("WARNING: Minimum height reached");
-                SmartDashboard.putString(limit, "WARNING: MIN HEIGHT");
+                SmartDashboard.putString(limString, "WARNING: MIN HEIGHT");
                 setElevatorHigher();
                 }
             // When maximum height is reached and elevator is attempting to go up. STOP 
             else if (maxHeight.get() && !down){
                 System.out.println("WARNING: Maximum height reached");
-                SmartDashboard.putString(limit, "WARNING: MAX HEIGHT");
+                SmartDashboard.putString(limString, "WARNING: MAX HEIGHT");
                 }
             // If all is good let the elevator run
             else {
                 elevatorMotor.set(elevatorSpeed);
-                SmartDashboard.putString("Limit Switch Status", "Ok");
+                SmartDashboard.putString(limString, "Ok");
             }
         }
     }
 
-    // Slightly raises the elevator 0.02 meters higher to not hurt the limit switch
-    public void setElevatorHigher(){
-        elevatorMotor.set(.01);
-        Timer.delay(2);
-        elevatorMotor.set(0);
-
-
+    // Slightly sets the elevator higher after the bottom limit switch is triggered
+    // TODO: Test and incorporate to main
+    private void setElevatorHigher(){
+        if (minHeight.get()){
+            elevatorMotor.set(ElevatorConstants.ELEVATOR_REBOUND_SPEED);
+            Timer.delay(ElevatorConstants.ELEVATOR_REBOUND_TIME);
+            elevatorMotor.set(0);
+        }
     }
 
     public void stop() {

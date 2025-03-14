@@ -47,7 +47,8 @@ public class OperatorInput extends SubsystemBase {
         autoPatternChooser.setDefaultOption("Do Nothing", AutoPattern.DO_NOTHING);
         SmartDashboard.putData("Auto Pattern", autoPatternChooser);
         autoPatternChooser.addOption("Drive Forward", AutoPattern.DRIVE_FORWARD);
-        autoPatternChooser.addOption("Box", AutoPattern.BOX);
+        //autoPatternChooser.addOption("Box", AutoPattern.BOX);
+        autoPatternChooser.setDefaultOption("Center Level 1", AutoPattern.CENTER_LEVEL1);
 
         waitTimeChooser.setDefaultOption("No wait", 0);
         SmartDashboard.putData("Auto Wait Time", waitTimeChooser);
@@ -213,17 +214,17 @@ public class OperatorInput extends SubsystemBase {
     }
 
     // The DPAD controlls elevator manually
-    public boolean elevatorUp() {
-        return operatorController.getPOV() == 0;
+    public double elevatorUp() {
+        return operatorController.getRightTriggerAxis();
     }
 
-    public boolean elevatorDown() {
-        return operatorController.getPOV() == 180;
+    public double elevatorDown() {
+        return operatorController.getLeftTriggerAxis();
     }
 
     public boolean overrideLimit(){
-        // When the left trigger axis is held the limit switches will be overrided
-        return operatorController.getRightTriggerAxis() > 0.5;
+        // When the Y button is held the limit switches will be overrided
+        return operatorController.getYButton();
     }
     /*
      * Coral Subsystem

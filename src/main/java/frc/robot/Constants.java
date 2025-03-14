@@ -47,6 +47,9 @@ public final class Constants {
 
         public static final int MAXHEIGHT_ID = 1;
         public static final int MINHEIGHT_ID = 0;
+
+        public static final double ELEVATOR_REBOUND_SPEED = 0.2;
+        public static final double ELEVATOR_REBOUND_TIME = 0.2;
             
     }
 
@@ -55,6 +58,7 @@ public final class Constants {
         public static final int     FEEDER_MOTOR_CAN_ID   = 6;
         public static final boolean FEEDER_MOTOR_INVERTED = true;
         public static final double  FEEDER_MOTOR_SPEED    = 0.4;
+        public static final double  FEEDER_MOTOR_INVERTED_SPEED    = 0.2;
 
     }
 
@@ -82,9 +86,9 @@ public final class Constants {
          */
         public static final double  GYRO_PID_KP               = 0.01;
 
-        public static final double  DRIVE_SCALING_BOOST       = 0.5;
+        public static final double  DRIVE_SCALING_BOOST       = 0.7;
         public static final double  DRIVE_SCALING_NORMAL      = .4;
-        public static final double  DRIVE_SCALING_SLOW        = .1;
+        public static final double  DRIVE_SCALING_SLOW        = .2;
         public static final double SLEW_RATE_LIMIT = 0.5;
     }
 

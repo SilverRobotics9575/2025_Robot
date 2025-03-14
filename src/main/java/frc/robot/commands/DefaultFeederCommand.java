@@ -17,10 +17,11 @@ public class DefaultFeederCommand extends LoggingCommand {
         addRequirements(feederSubsystem);
     }
 
+    // TODO: Test the reverse feeder motor speed
     @Override
     public void execute() {
         if (operatorInput.scoreCoral()) {
-            feederSubsystem.setMotorSpeed(-Constants.FeederConstants.FEEDER_MOTOR_SPEED);
+            feederSubsystem.setMotorSpeed(-Constants.FeederConstants.FEEDER_MOTOR_INVERTED_SPEED);
         }
         else if (operatorInput.reverseCoral()) {
             feederSubsystem.setMotorSpeed(Constants.FeederConstants.FEEDER_MOTOR_SPEED);
