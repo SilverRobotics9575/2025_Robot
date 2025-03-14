@@ -13,6 +13,7 @@ import frc.robot.commands.CancelCommand;
 import frc.robot.commands.GameController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 
 /**
  * The operatorController exposes all driver functions
@@ -72,11 +73,11 @@ public class OperatorInput extends SubsystemBase {
      *
      * @param driveSubsystem
      */
-    public void configureButtonBindings(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem) {
+    public void configureButtonBindings(DriveSubsystem driveSubsystem, ElevatorSubsystem elevatorSubsystem, FeederSubsystem feederSubsystem) {
 
         // Cancel Command - cancels all running commands on all subsystems
         new Trigger(() -> isCancel())
-            .onTrue(new CancelCommand(this, driveSubsystem, elevatorSubsystem));
+            .onTrue(new CancelCommand(this, driveSubsystem, elevatorSubsystem, feederSubsystem));
 
         // Gyro and Encoder Reset
         new Trigger(() -> driverController.getBackButton())

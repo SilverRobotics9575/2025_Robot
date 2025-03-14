@@ -50,7 +50,7 @@ public class RobotContainer {
         feederSubsystem.setDefaultCommand(new DefaultFeederCommand(oi, feederSubsystem));
 
         // Configure the button bindings - pass in all subsystems
-        oi.configureButtonBindings(driveSubsystem, elevatorSubsystem);
+        oi.configureButtonBindings(driveSubsystem, elevatorSubsystem, feederSubsystem);
 
         // Add a trigger to flash the LEDs in sync with the
         // RSL light for 5 flashes when the robot is enabled
