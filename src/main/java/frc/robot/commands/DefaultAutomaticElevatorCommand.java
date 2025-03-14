@@ -33,7 +33,6 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
       public void execute() {
-
         // Robot is able to go to feeder station & level 1-3
         if (oi.feederStation()){
             elevatorSubsystem.setSetpointCommand(Setpoint.FEEDER_STATION);
@@ -48,13 +47,14 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
             elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL3);
         }
         
+        // TODO: Test if elevator now works
         // TODO: Test that the speeds accurately work
         // Manual control buttons
         if (oi.elevatorUp() > 0) {
-            elevatorSubsystem.setElevatorSpeed(oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
+            elevatorSubsystem.setElevatorSpeed(Math.abs(oi.elevatorUp())* ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
         }
         else if (oi.elevatorDown() > 0) {
-            elevatorSubsystem.setElevatorSpeed(- oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
+            elevatorSubsystem.setElevatorSpeed(- Math.abs(oi.elevatorDown()) * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
         }
     }
     

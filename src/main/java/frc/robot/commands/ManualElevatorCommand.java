@@ -32,11 +32,11 @@ public class ManualElevatorCommand extends LoggingCommand{
   public void execute() {
          // Manual control buttons
         if (oi.elevatorUp() > 0) {
-            elevatorSubsystem.setElevatorSpeed(oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, 
+            elevatorSubsystem.setElevatorSpeed(Math.abs(oi.elevatorUp()) * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, 
               false, oi.overrideLimit());
         }
         else if (oi.elevatorDown() > 0) {
-            elevatorSubsystem.setElevatorSpeed(- oi.elevatorUp() * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, 
+            elevatorSubsystem.setElevatorSpeed(- Math.abs(oi.elevatorDown()) * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, 
             true, oi.overrideLimit());
         }
   }
