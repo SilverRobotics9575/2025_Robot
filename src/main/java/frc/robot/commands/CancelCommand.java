@@ -4,6 +4,7 @@ import frc.robot.OperatorInput;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 
 /**
  * This command is used to safely stop the robot in its current position, and to
@@ -15,6 +16,7 @@ public class CancelCommand extends LoggingCommand {
     private final DriveSubsystem driveSubsystem;
     private final ElevatorSubsystem elevatorSubsystem;
     private final FeederSubsystem feederSubsystem;
+
     /**
      * Cancel the commands running on all subsystems.
      *
