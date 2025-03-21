@@ -10,7 +10,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefaultElevatorCommand extends LoggingCommand {
 
-    private final OperatorInput     oi;
+    private final OperatorInput oi;
     private final ElevatorSubsystem elevatorSubsystem;
 
     /**
@@ -19,7 +19,7 @@ public class DefaultElevatorCommand extends LoggingCommand {
     public DefaultElevatorCommand(OperatorInput oi, ElevatorSubsystem elevatorSubsystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(elevatorSubsystem);
-        this.oi                = oi;
+        this.oi = oi;
         this.elevatorSubsystem = elevatorSubsystem;
     }
 
@@ -34,7 +34,7 @@ public class DefaultElevatorCommand extends LoggingCommand {
     public void execute() {
 
         // Robot is able to go to feeder station & level 1-3
-       /* if (oi.feederStation()){
+        /* if (oi.feederStation()){
             elevatorSubsystem.level(0);
         }
         else if (oi.level1()) {
@@ -46,13 +46,13 @@ public class DefaultElevatorCommand extends LoggingCommand {
         else if (oi.level3()) {
             elevatorSubsystem.level(3);
         }*/
-        
         // Manual control buttons
         if (oi.elevatorUp()) {
             elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
-        }
-        else if (oi.elevatorDown()) {
+        } else if (oi.elevatorDown()) {
             elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
+        } else {
+            elevatorSubsystem.stop();
         }
     }
 
