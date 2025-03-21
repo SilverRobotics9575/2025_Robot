@@ -45,7 +45,7 @@ public final class Constants {
         public static final int     LEVEL3                  = 100;
 
         public static final int MAXHEIGHT_ID = 1;
-        public static final int MINHEIGHT_ID = 0;
+        public static final int MINHEIGHT_ID = 3;
             
     }
 
