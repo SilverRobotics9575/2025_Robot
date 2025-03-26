@@ -4,6 +4,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -36,7 +37,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private final DigitalInput        maxHeight                    = new DigitalInput(ElevatorConstants.MAXHEIGHT_ID);
     private final DigitalInput        minHeight                    = new DigitalInput(ElevatorConstants.MINHEIGHT_ID);
-
     public enum ElevatorPosition {
     }
 
@@ -75,10 +75,10 @@ public class ElevatorSubsystem extends SubsystemBase {
      * will use MAXMotion position control which will allow for a smooth
      * acceleration and deceleration to the mechanisms' setpoints.
      */
-   /* private void moveToSetpoint() {
+    private void moveToSetpoint() {
         elevatorClosedLoopController.setReference(
-            elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
-    }*/
+            elevatorCurrentTarget, ControlType.kPosition);
+    }
 
     @Override
     public void periodic() {
