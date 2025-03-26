@@ -14,7 +14,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -79,11 +78,11 @@ public class ElevatorSubsystem extends SubsystemBase {
      */
     private void moveToSetpoint() {
         elevatorClosedLoopController.setReference(
-                elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+                elevatorCurrentTarget, ControlType.kPosition);
     }
 
     // Zero the elevator encoder when the limit switch or a button is pressed
-    private void zeroElevatorOnLimit() {
+    /*private void zeroElevatorOnLimit() {
         if (minHeight.get() && !wasResetByLimit) {
             // Zero the encoder only when the limit switch is pressed
             // to prevent constant zeroing while pressed
@@ -92,7 +91,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else if (!minHeight.get()) {
             wasResetByLimit = false;
         }
-    }
+    }*/
 
     // Zero the encoder when the robo rio user button is
     public void zeroOnUserButton(boolean resetEncoders) {
@@ -129,7 +128,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         moveToSetpoint();
-        zeroElevatorOnLimit();
+        //zeroElevatorOnLimit();
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
         SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
@@ -152,7 +151,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             if (minHeight.get() && down) {
                 System.out.println("WARNING: Minimum height reached");
                 SmartDashboard.putString(limString, "WARNING: MIN HEIGHT");
-                setElevatorHigher();
+                //setElevatorHigher();
             } // When maximum height is reached and elevator is attempting to go up. STOP 
             else if (maxHeight.get() && !down) {
                 System.out.println("WARNING: Maximum height reached");
@@ -167,13 +166,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Slightly sets the elevator higher after the bottom limit switch is triggered
     // TODO: Test and incorporate to main
-    private void setElevatorHigher() {
+   /* private void setElevatorHigher() {
         if (minHeight.get()) {
             elevatorMotor.set(ElevatorConstants.ELEVATOR_REBOUND_SPEED);
             Timer.delay(ElevatorConstants.ELEVATOR_REBOUND_TIME);
             elevatorMotor.set(0);
         }
-    }
+    }*/
 
     public void stop() {
         elevatorMotor.set(0);

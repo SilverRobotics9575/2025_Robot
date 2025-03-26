@@ -40,9 +40,9 @@ public final class Constants {
         public static final double  CAN_ELEVATOR_MOTOR_SPEED = 0.8;
 
         // TODO: Adjust setpoints as testing
-        public static final int     FEEDER_STATION           = 5;
-        public static final int     LEVEL1                  = 5;
-        public static final int     LEVEL2                  = 5;
+        public static final int     FEEDER_STATION           = 10;
+        public static final int     LEVEL1                  = 10;
+        public static final int     LEVEL2                  = 10;
         public static final int     LEVEL3                  = 100; 
 
         public static final int MAXHEIGHT_ID = 1;
