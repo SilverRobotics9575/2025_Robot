@@ -56,7 +56,7 @@ public class ElevatorSubsystem extends SubsystemBase {
      * Command to set the subsystem setpoint. This will set the arm and elevator
      * to their predefined positions for the given setpoint.
      */
-    /*public void level(int level) {
+    public void level(int level) {
         switch (level) {
 
         case 0 ->
@@ -82,7 +82,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        /*moveToSetpoint();*/
+        moveToSetpoint();
         // zeroOnUserButton();
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
