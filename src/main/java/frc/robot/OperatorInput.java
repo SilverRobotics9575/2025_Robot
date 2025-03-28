@@ -89,16 +89,14 @@ public class OperatorInput extends SubsystemBase {
             }));
         // Elevator Encoder Reset
         new Trigger(() -> RobotController.getUserButton())
-            .onTrue(new InstantCommand(() -> {
-                elevatorSubsystem.zeroOnUserButton(true);
-            }));
+            .onTrue(new InstantCommand(() -> elevatorSubsystem.zeroOnUserButton(true)));
         // Manual control for elevator
         new Trigger(() -> operatorController.getPOV() == 0)
-            .onTrue(new InstantCommand(() -> {
+            .whileTrue(new InstantCommand(() -> {
                 elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, overrideLimit());
             }));
         new Trigger(() -> operatorController.getPOV() == 180)
-            .onTrue(new InstantCommand(() -> {
+            .whileTrue(new InstantCommand(() -> {
                 elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, overrideLimit());
             }));
     }
