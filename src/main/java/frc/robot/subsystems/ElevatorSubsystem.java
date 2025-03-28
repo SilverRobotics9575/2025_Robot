@@ -82,7 +82,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // Zero the elevator encoder when the limit switch or a button is pressed
-    /*private void zeroElevatorOnLimit() {
+    private void zeroElevatorOnLimit() {
         if (minHeight.get() && !wasResetByLimit) {
             // Zero the encoder only when the limit switch is pressed
             // to prevent constant zeroing while pressed
@@ -91,7 +91,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else if (!minHeight.get()) {
             wasResetByLimit = false;
         }
-    }*/
+    }
 
     // Zero the encoder when the robo rio user button is
     public void zeroOnUserButton(boolean resetEncoders) {
