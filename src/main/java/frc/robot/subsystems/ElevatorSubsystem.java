@@ -58,18 +58,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         FEEDER_STATION, LEVEL1, LEVEL2, LEVEL3;
     }
 
-    /**
-     * Resets the elevator encoder to zero.
-     */
-    /*public void resetEncoders() {
-        // Reset the offsets so that the encoders are zeroed.
-        elevatorEncoderOffset  = 0;
-        elevatorEncoderOffset  = -getElevatorEncoder();
-    }
-
-    public double getElevatorEncoder() {
-        return elevatorEncoder.getPosition() + elevatorEncoderOffset;
-    }*/
 
     /**
      * Drive the arm and elevator motors to their respective setpoints. This
@@ -82,7 +70,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // Zero the elevator encoder when the limit switch or a button is pressed
-    private void zeroElevatorOnLimit() {
+    /*private void zeroElevatorOnLimit() {
         if (minHeight.get() && !wasResetByLimit) {
             // Zero the encoder only when the limit switch is pressed
             // to prevent constant zeroing while pressed
@@ -91,7 +79,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else if (!minHeight.get()) {
             wasResetByLimit = false;
         }
-    }
+    }*/
 
     // Zero the encoder when the robo rio user button is
     public void zeroOnUserButton(boolean resetEncoders) {

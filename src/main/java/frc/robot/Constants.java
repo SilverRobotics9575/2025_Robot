@@ -43,7 +43,7 @@ public final class Constants {
         public static final int     FEEDER_STATION           = 10;
         public static final int     LEVEL1                  = 10;
         public static final int     LEVEL2                  = 10;
-        public static final int     LEVEL3                  = 100; 
+        public static final int     LEVEL3                  = 50; 
 
         public static final int MAXHEIGHT_ID = 1;
         public static final int MINHEIGHT_ID = 0;
