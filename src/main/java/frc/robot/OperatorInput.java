@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants.AutoPattern;
 import frc.robot.Constants.DriveConstants.DriveMode;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorInputConstants;
 import frc.robot.commands.CancelCommand;
 import frc.robot.commands.GameController;
@@ -91,19 +92,15 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new InstantCommand(() -> {
                 elevatorSubsystem.zeroOnUserButton(true);
             }));
-        // Configure the DPAD to drive one meter on a heading
-        /*
-        new Trigger(() -> driverController.getPOV() == 0)
-            .onTrue(new DriveOnHeadingCommand(0, .5, 100, driveSubsystem));
-
-        new Trigger(() -> driverController.getPOV() == 90)
-            .onTrue(new DriveOnHeadingCommand(90, .5, 100, driveSubsystem));
-
-        new Trigger(() -> driverController.getPOV() == 180)
-            .onTrue(new DriveOnHeadingCommand(180, .5, 100, driveSubsystem));
-
-        new Trigger(() -> driverController.getPOV() == 270)
-            .onTrue(new DriveOnHeadingCommand(270, .5, 100, driveSubsystem));*/
+        // Manual control for elevator
+        new Trigger(() -> operatorController.getPOV() == 0)
+            .onTrue(new InstantCommand(() -> {
+                elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, overrideLimit());
+            }));
+        new Trigger(() -> operatorController.getPOV() == 180)
+            .onTrue(new InstantCommand(() -> {
+                elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, overrideLimit());
+            }));
     }
 
     /*
@@ -210,12 +207,12 @@ public class OperatorInput extends SubsystemBase {
     }
 
     // The DPAD controlls elevator manually
-    public double elevatorUp() {
-        return operatorController.getRightTriggerAxis();
+    public boolean elevatorUp() {
+        return operatorController.getPOV() == 0;
     }
 
-    public double elevatorDown() {
-        return operatorController.getLeftTriggerAxis();
+    public boolean elevatorDown() {
+        return operatorController.getPOV() == 180;
     }
 
     public boolean overrideLimit(){

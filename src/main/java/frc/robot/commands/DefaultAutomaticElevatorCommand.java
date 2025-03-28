@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands;
 
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.OperatorInput;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.Setpoint;
@@ -45,16 +44,6 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
         }
         else if (oi.level3()) {
             elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL3);
-        }
-        
-        // TODO: If auto works then move the manual control to the manual elevator command
-        // TODO: Test that the speeds accurately work
-        // Manual control buttons
-        if (oi.elevatorUp() > 0) {
-            elevatorSubsystem.setElevatorSpeed(Math.abs(oi.elevatorUp())* ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, oi.overrideLimit());
-        }
-        else if (oi.elevatorDown() > 0) {
-            elevatorSubsystem.setElevatorSpeed(- Math.abs(oi.elevatorDown()) * ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, oi.overrideLimit());
         }
     }
     
