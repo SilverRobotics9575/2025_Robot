@@ -46,7 +46,7 @@ public final class Constants {
         public static final int     LEVEL3                  = 50; 
 
         public static final int MAXHEIGHT_ID = 1;
-        public static final int MINHEIGHT_ID = 0;
+        public static final int MINHEIGHT_ID = 3;
 
         public static final double ELEVATOR_REBOUND_SPEED = 0.2;
         public static final double ELEVATOR_REBOUND_TIME = 0.2;

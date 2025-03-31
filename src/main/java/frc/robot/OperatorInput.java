@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConstants.AutoPattern;
@@ -92,11 +93,11 @@ public class OperatorInput extends SubsystemBase {
             .onTrue(new InstantCommand(() -> elevatorSubsystem.zeroOnUserButton(true)));
         // Manual control for elevator
         new Trigger(() -> operatorController.getPOV() == 0)
-            .whileTrue(new InstantCommand(() -> {
+            .whileTrue(new RunCommand(() -> {
                 elevatorSubsystem.setElevatorSpeed(ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, false, overrideLimit());
             }));
         new Trigger(() -> operatorController.getPOV() == 180)
-            .whileTrue(new InstantCommand(() -> {
+            .whileTrue(new RunCommand(() -> {
                 elevatorSubsystem.setElevatorSpeed(-ElevatorConstants.CAN_ELEVATOR_MOTOR_SPEED, true, overrideLimit());
             }));
     }
@@ -204,18 +205,9 @@ public class OperatorInput extends SubsystemBase {
         return operatorController.getXButtonPressed();
     }
 
-    // The DPAD controlls elevator manually
-    public boolean elevatorUp() {
-        return operatorController.getPOV() == 0;
-    }
-
-    public boolean elevatorDown() {
-        return operatorController.getPOV() == 180;
-    }
-
     public boolean overrideLimit(){
         // When the Y button is held the limit switches will be overrided
-        return operatorController.getYButton();
+        return operatorController.getRightTriggerAxis() > 0.5;
     }
     /*
      * Coral Subsystem
