@@ -35,6 +35,7 @@ public class DefaultAutomaticElevatorCommand extends LoggingCommand {
         // Robot is able to go to feeder station & level 1-3
         if (oi.feederStation()){
             elevatorSubsystem.setSetpointCommand(Setpoint.FEEDER_STATION);
+            System.out.println("Feeder Station Pressed");
         }
         else if (oi.level1()) {
             elevatorSubsystem.setSetpointCommand(Setpoint.LEVEL1);

@@ -27,13 +27,10 @@ import frc.robot.Constants.ElevatorConstants;
  */
 public class ElevatorSubsystem extends SubsystemBase {
 
-    // private final LightsSubsystem lightsSubsystem;
     private final SparkMax elevatorMotor = new SparkMax(ElevatorConstants.ELEVATOR_MOTOR_CAN_ID, MotorType.kBrushless);
     private final RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
     private final SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
 
-    private double elevatorEncoderOffset = 0;
-    private double elevatorSpeed = 0;
     private double elevatorCurrentTarget = ElevatorConstants.LEVEL1; // The starting position should be at level 1
 
     private final DigitalInput maxHeight = new DigitalInput(ElevatorConstants.MAXHEIGHT_ID);
@@ -70,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     // Zero the elevator encoder when the limit switch or a button is pressed
-    /*private void zeroElevatorOnLimit() {
+    private void zeroElevatorOnLimit() {
         if (minHeight.get() && !wasResetByLimit) {
             // Zero the encoder only when the limit switch is pressed
             // to prevent constant zeroing while pressed
@@ -79,7 +76,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else if (!minHeight.get()) {
             wasResetByLimit = false;
         }
-    }*/
+    }
 
     // Zero the encoder when the robo rio user button is
     public void zeroOnUserButton(boolean resetEncoders) {
@@ -100,8 +97,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public Command setSetpointCommand(Setpoint setpoint) {
         return this.runOnce(
                 () -> {
+                    System.out.println("Entered" + setpoint);
                     switch (setpoint) {
-                        case FEEDER_STATION ->
+                        case FEEDER_STATION -> 
                             elevatorCurrentTarget = ElevatorConstants.FEEDER_STATION;
                         case LEVEL1 ->
                             elevatorCurrentTarget = ElevatorConstants.LEVEL1;
@@ -110,23 +108,25 @@ public class ElevatorSubsystem extends SubsystemBase {
                         case LEVEL3 ->
                             elevatorCurrentTarget = ElevatorConstants.LEVEL3;
                     }
+                    System.out.println("Elevator target set to: " + elevatorCurrentTarget);
                 });
     }
 
     @Override
     public void periodic() {
         moveToSetpoint();
-        //zeroElevatorOnLimit();
+        zeroElevatorOnLimit();
+
         // This method will be called once per scheduler run
         // Display the position and target position of the elevator on the SmartDashboard
-        SmartDashboard.putNumber("Elevator Target Position", Math.round(elevatorCurrentTarget * 100) / 100d);
-        SmartDashboard.putNumber("Elevator Actual Position", Math.round(elevatorEncoder.getPosition()) * 100 / 100d);
+        SmartDashboard.putNumber("Elevator Target Position", elevatorCurrentTarget);
+        SmartDashboard.putNumber("Elevator Actual Position", Math.round(elevatorEncoder.getPosition()));
     }
 
     // The manual control method
     public void setElevatorSpeed(double motorSpeed, boolean down, boolean isOverridePressed) {
         String limString = "Limit Switch Status";
-        elevatorSpeed = motorSpeed;
+        double elevatorSpeed = motorSpeed;
 
         if (isOverridePressed) {
             // Override limit switches
